@@ -29,7 +29,7 @@ class AppEmptyState extends StatelessWidget {
     IconData? icon,
   }) {
     return AppEmptyState(
-      title: title ?? 'no-data'.tr,
+      title: title ?? 'Tidak ada data',
       subtitle: subtitle ?? 'Belum ada data yang bisa ditampilkan saat ini.',
       icon: icon ?? Ionicons.folder_open_outline,
       iconColor: AppStyle.primary,
@@ -43,11 +43,11 @@ class AppEmptyState extends StatelessWidget {
     VoidCallback? onRetry,
   }) {
     String detailError = message.isNotEmpty
-        ? '\n\n${'error-detail'.tr}: $message'
+        ? '\n\n${'Detail Error'}: $message'
         : '';
     return AppEmptyState(
-      title: title ?? 'error'.tr,
-      subtitle: '${'error-connection-update'.tr}$detailError',
+      title: title ?? 'Terjadi Kesalahan',
+      subtitle: '${'Error'.tr}$detailError',
       icon: Ionicons.alert_circle_outline,
       iconColor: AppStyle.danger,
       buttonText: buttonText ?? 'try-again'.tr,
@@ -77,7 +77,6 @@ class AppEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
 
-            // Judul
             Text(title, style: AppFonts.lgBold, textAlign: TextAlign.center),
 
             if (subtitle != null && subtitle!.isNotEmpty) ...[

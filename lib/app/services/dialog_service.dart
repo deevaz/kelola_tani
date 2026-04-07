@@ -230,78 +230,92 @@ class DialogService {
     Get.dialog(
       Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(30.r),
         ),
         child: AppMaterialRound(
-          paddingValue: 20.r,
+          paddingValue: 24.r,
+          radius: 30.r,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text(title, style: AppFonts.lgBold)),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: AppFonts.lgBold.copyWith(fontSize: 22.sp),
+                    ),
+                  ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.grey.shade400,
+                      size: 24.sp,
+                    ),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+
+              const Divider(),
               ...details.entries
-                  .map((e) => _itemDetail(e.key, e.value))
+                  .map(
+                    (e) => Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.key,
+                            style: AppFonts.xsRegular.copyWith(
+                              color: AppStyle.grey,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            e.value,
+                            style: AppFonts.mdBold.copyWith(
+                              color: AppStyle.dark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                   .toList(),
+
               if (note != null && note.isNotEmpty) ...[
-                SizedBox(height: 15.h),
                 Text(
-                  noteLabel ?? 'note'.tr,
+                  noteLabel ?? 'Catatan Tambahan',
                   style: AppFonts.mdMedium.copyWith(color: AppStyle.primary),
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 8.h),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(12.r),
+                  padding: EdgeInsets.all(16.r),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(10.r),
+                    color: AppStyle.light,
+                    borderRadius: BorderRadius.circular(15.r),
+                    border: Border.all(color: Colors.grey.shade200),
                   ),
-                  child: Text(note, style: AppFonts.smRegular),
-                ),
-              ],
-              SizedBox(height: 20.h),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyle.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
+                  child: Text(
+                    note,
+                    style: AppFonts.smRegular.copyWith(
+                      height: 1.5,
+                      color: Colors.grey.shade700,
                     ),
                   ),
-                  onPressed: () => Get.back(),
-                  child: Text(
-                    'close'.tr,
-                    style: TextStyle(color: AppStyle.white),
-                  ),
                 ),
-              ),
+              ],
+
+              SizedBox(height: 24.h),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  static Widget _itemDetail(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: AppFonts.xsRegular.copyWith(color: Colors.grey)),
-          Text(value, style: AppFonts.mdMedium),
-        ],
       ),
     );
   }
