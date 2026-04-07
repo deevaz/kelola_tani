@@ -5,6 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/services/snackbar_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
@@ -514,6 +515,136 @@ class DialogService {
         ),
         padding: WidgetStateProperty.all(
           EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        ),
+      ),
+    );
+  }
+
+  static void noteForm({
+    required String title,
+    required DateTime initialTime,
+    required String initialContent,
+    required Function(DateTime selectedDateTime, String content) onConfirm,
+  }) {
+    final TextEditingController contentController = TextEditingController(
+      text: initialContent,
+    );
+
+    final Rx<DateTime> selectedDateTime = initialTime.obs;
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.r),
+        ),
+        child: AppMaterialRound(
+          paddingValue: 24.r,
+          radius: 30.r,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(title, style: AppFonts.lgBold.copyWith(fontSize: 24.sp)),
+                SizedBox(height: 25.h),
+
+                GestureDetector(
+                  onTap: () async {
+                    DateTime? date = await showDatePicker(
+                      context: Get.context!,
+                      initialDate: selectedDateTime.value,
+                      firstDate: DateTime(2025),
+                      lastDate: DateTime(2101),
+                    );
+
+                    if (date != null) {
+                      TimeOfDay? time = await showTimePicker(
+                        context: Get.context!,
+                        initialTime: TimeOfDay.fromDateTime(
+                          selectedDateTime.value,
+                        ),
+                      );
+
+                      if (time != null) {
+                        selectedDateTime.value = DateTime(
+                          date.year,
+                          date.month,
+                          date.day,
+                          time.hour,
+                          time.minute,
+                        );
+                      }
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 14.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Ionicons.calendar_outline,
+                          size: 20.sp,
+                          color: AppStyle.primary,
+                        ),
+                        SizedBox(width: 12.w),
+                        Obx(
+                          () => Text(
+                            "${selectedDateTime.value.day}/${selectedDateTime.value.month}/${selectedDateTime.value.year} - ${TimeOfDay.fromDateTime(selectedDateTime.value).format(Get.context!)}",
+                            style: AppFonts.mdBold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                TextField(
+                  controller: contentController,
+                  maxLines: 4,
+                  style: AppFonts.mdMedium,
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan aktivitas (Contoh: Leaching NPK)',
+                    hintStyle: AppFonts.smRegular.copyWith(
+                      color: Colors.grey.shade600,
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 25.h),
+
+                AppButton(
+                  onTap: () {
+                    if (contentController.text.isNotEmpty) {
+                      onConfirm(selectedDateTime.value, contentController.text);
+                      Get.back();
+                    } else {
+                      SnackbarService.warning(
+                        'Peringatan',
+                        'Catatan jangan kosong ya',
+                      );
+                    }
+                  },
+                  text: 'Simpan',
+                  width: double.infinity,
+                  style: AppButtonStyle.rounded15.copyWith(
+                    backgroundColor: WidgetStateProperty.all(AppStyle.primary),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

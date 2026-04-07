@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:kelola_tani/app/modules/device_detail/bindings/notes_binding.dart';
+import 'package:kelola_tani/app/modules/device_detail/views/notes_view.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
@@ -39,6 +41,11 @@ class AppPages {
       name: _Paths.DEVICE_DETAIL,
       page: () => const DeviceDetailView(),
       binding: DeviceDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTES,
+      page: () => const NotesView(),
+      binding: NotesBinding(),
     ),
   ];
 }

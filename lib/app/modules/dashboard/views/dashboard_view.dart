@@ -74,7 +74,7 @@ class DashboardView extends StatelessWidget {
               height: Get.height - 240.h,
               width: 1.sw,
               decoration: BoxDecoration(
-                color: AppStyle.white,
+                color: AppStyle.light,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(40.r),
                   topRight: Radius.circular(40.r),
@@ -121,7 +121,7 @@ class DashboardView extends StatelessWidget {
 
   Widget _buildDeviceCard(String label, IconData icon, VoidCallback? onTap) {
     return AppMaterialRound(
-      color: AppStyle.light,
+      color: AppStyle.white,
       radius: 16.r,
       elevation: 2,
       onTap: onTap,

@@ -1,0 +1,160 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:get/get.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:kelola_tani/app/core/theme/app_fonts.dart';
+import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/device_detail/controllers/notes_controller.dart';
+import 'package:kelola_tani/app/services/dialog_service.dart';
+import 'package:kelola_tani/app/shared/widgets/app_header.dart';
+import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
+
+class NotesView extends GetView {
+  const NotesView({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          AppHeader(
+            leading: Text(
+              'Catatan',
+              style: AppFonts.xlSemiBold.copyWith(color: AppStyle.white),
+            ),
+            trailing: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppStyle.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(
+                  color: AppStyle.white.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+
+              child: Center(
+                child: Text(
+                  'Perangkat: Prgkt 1',
+                  style: AppFonts.smBold.copyWith(color: AppStyle.white),
+                ),
+              ),
+            ),
+          ),
+          Expanded(child: _buildDashboardGrid()),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          DialogService.noteForm(
+            title: 'Tambah Catatan',
+            initialTime: DateTime.now(),
+            initialContent: '',
+            onConfirm: (time, content) {},
+          );
+        },
+        backgroundColor: AppStyle.primary,
+        child: Icon(Icons.add, color: AppStyle.white),
+      ),
+    );
+  }
+}
+
+Widget _buildDashboardGrid() {
+  return ListView.separated(
+    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+    itemCount: 3,
+    separatorBuilder: (context, index) => SizedBox(height: 12.h),
+    itemBuilder: (context, index) {
+      return AppMaterialRound(
+        paddingValue: 0,
+        radius: 15.r,
+        color: AppStyle.white,
+        elevation: 2,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15.r),
+          child: Slidable(
+            key: ValueKey(index),
+            endActionPane: ActionPane(
+              motion: const BehindMotion(),
+              extentRatio: 0.45,
+              children: [
+                _buildCustomSlidableAction(
+                  icon: Ionicons.pencil_outline,
+                  color: AppStyle.secondary,
+                  label: 'Edit',
+                  onTap: () {
+                    DialogService.noteForm(
+                      title: 'Edit Catatan',
+                      initialTime: DateTime.now(),
+                      initialContent:
+                          'Ini adalah catatan untuk perangkat Prgkt 1.',
+                      onConfirm: (time, content) {},
+                    );
+                  },
+                ),
+                _buildCustomSlidableAction(
+                  icon: Ionicons.trash_outline,
+                  color: AppStyle.danger,
+                  label: 'Hapus',
+                  onTap: () {
+                    DialogService.confirmation(
+                      title: 'Hapus Catatan',
+                      message: 'Apakah Anda yakin ingin menghapus catatan ini?',
+                      onConfirm: () {},
+                    );
+                  },
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(15.r),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('1 Maret 2026 - 14:45', style: AppFonts.lgSemiBold),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'Ini adalah catatan untuk perangkat Prgkt 1.',
+                      style: AppFonts.mdRegular,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildCustomSlidableAction({
+  required IconData icon,
+  required Color color,
+  required String label,
+  required VoidCallback onTap,
+}) {
+  return CustomSlidableAction(
+    backgroundColor: color,
+    onPressed: (context) => onTap(),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: AppStyle.white, size: 20.sp),
+        SizedBox(height: 4.h),
+        Text(
+          label,
+          style: TextStyle(
+            color: AppStyle.white,
+            fontSize: 10.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  );
+}
