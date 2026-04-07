@@ -146,6 +146,7 @@ Widget _buildDashboardGrid() {
               label: 'Prediksi\nNutrisi (Detail)',
               icon: Ionicons.analytics,
               color: AppStyle.accent,
+              onTap: () => Get.toNamed('/ai'),
             ),
           ],
         ),
