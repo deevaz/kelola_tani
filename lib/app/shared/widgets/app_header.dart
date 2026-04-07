@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 
 class AppHeader extends StatelessWidget {
-  final Widget? leading; // Untuk bagian teks dan icon bulet
-  final Widget? trailing; // Untuk bagian image assets atau icon kanan
+  final Widget? leading;
+  final Widget? trailing;
   final double? height;
   final Color? backgroundColor;
 
@@ -35,9 +34,7 @@ class AppHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (leading != null) Expanded(child: leading!),
-
             const Spacer(),
-
             if (trailing != null) trailing!,
           ],
         ),
