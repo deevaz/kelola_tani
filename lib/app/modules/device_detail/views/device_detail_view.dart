@@ -4,8 +4,11 @@ import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/device_detail/views/widgets/dashboard_section.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/detail_card.dart';
+import 'package:kelola_tani/app/modules/device_detail/views/widgets/history_table.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/menu_card.dart';
+import 'package:kelola_tani/app/modules/device_detail/views/widgets/nutrisi_chart.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/sensor_tile.dart';
 import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_header.dart';
@@ -18,30 +21,32 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppStyle.light,
-      body: Column(
-        children: [
-          AppHeader(
-            leading: Row(
-              children: [
-                Text(
-                  'Perangkat 1',
-                  style: AppFonts.xlSemiBold.copyWith(color: AppStyle.white),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AppHeader(
+              leading: Row(
+                children: [
+                  Text(
+                    'Perangkat 1',
+                    style: AppFonts.xlSemiBold.copyWith(color: AppStyle.white),
+                  ),
+                  SizedBox(width: 5.w),
+                  Icon(Icons.circle, color: Colors.blue, size: 12.sp),
+                ],
+              ),
+              trailing: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: Image.asset(
+                  'assets/icons/app_icon.png',
+                  height: 40.w,
+                  width: 40.w,
                 ),
-                SizedBox(width: 5.w),
-                Icon(Icons.circle, color: Colors.blue, size: 12.sp),
-              ],
-            ),
-            trailing: ClipRRect(
-              borderRadius: BorderRadius.circular(10.r),
-              child: Image.asset(
-                'assets/icons/app_icon.png',
-                height: 40.w,
-                width: 40.w,
               ),
             ),
-          ),
-          _buildDashboardGrid(),
-        ],
+            _buildDashboardGrid(),
+          ],
+        ),
       ),
     );
   }
@@ -50,7 +55,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
 Widget _buildDashboardGrid() {
   final controller = Get.find<DeviceDetailController>();
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
     child: Column(
       children: [
         IntrinsicHeight(
@@ -149,6 +154,27 @@ Widget _buildDashboardGrid() {
               onTap: () => Get.toNamed('/ai'),
             ),
           ],
+        ),
+        SizedBox(height: 20.h),
+
+        Obx(
+          () => DashboardSectionCard(
+            title: 'Grafik Nutrisi (NPK)',
+            dateRangeLabel: controller.chartFilter.value,
+            onDateTap: () => controller.pickDateRange(),
+            content: const NutrisiChart(),
+          ),
+        ),
+
+        SizedBox(height: 20.h),
+
+        Obx(
+          () => DashboardSectionCard(
+            title: 'Tabel History Lingkungan',
+            dateRangeLabel: controller.formattedDateRange,
+            onDateTap: () => controller.pickDateRange(),
+            content: const HistoryTable(),
+          ),
         ),
       ],
     ),
