@@ -13,12 +13,16 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final ButtonStyle? style;
   final double? width;
+  final double? height;
+  final double? fontSize;
   final Color? color;
+  final Color? foregroundColor;
   final double? size;
   final Color? textColor;
   final double? padding;
   final AppButtonVariant variant;
   final double? borderRadius;
+  final double? elevation;
 
   const AppButton({
     super.key,
@@ -28,11 +32,15 @@ class AppButton extends StatelessWidget {
     this.style,
     this.textColor,
     this.width,
+    this.height,
     this.color,
+    this.foregroundColor,
+    this.fontSize,
     this.borderRadius,
     this.icon,
   }) : variant = AppButtonVariant.elevated,
        size = null,
+       elevation = null,
        padding = null;
 
   const AppButton.outlined({
@@ -42,12 +50,16 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.style,
     this.color,
+    this.foregroundColor,
     this.textColor,
+    this.height,
+    this.fontSize,
     this.width,
     this.borderRadius,
     this.icon,
   }) : variant = AppButtonVariant.outlined,
        size = null,
+       elevation = null,
        padding = null;
 
   const AppButton.icon({
@@ -58,11 +70,15 @@ class AppButton extends StatelessWidget {
     this.color,
     this.borderRadius,
     this.size,
+    this.elevation,
     this.padding,
   }) : variant = AppButtonVariant.iconRound,
        text = null,
        style = null,
        textColor = null,
+       height = null,
+       foregroundColor = null,
+       fontSize = null,
        width = null;
 
   const AppButton.text({
@@ -74,10 +90,14 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.textColor,
     this.width,
+    this.fontSize,
   }) : variant = AppButtonVariant.text,
        color = null,
+       elevation = null,
        borderRadius = null,
        size = null,
+       foregroundColor = null,
+       height = null,
        padding = null;
 
   @override
@@ -141,6 +161,7 @@ class AppButton extends StatelessWidget {
                     style: TextStyle(
                       color: textColor ?? AppStyle.primary,
                       fontWeight: FontWeight.w600,
+                      fontSize: fontSize ?? 16.sp,
                     ),
                   ),
           );
@@ -149,6 +170,7 @@ class AppButton extends StatelessWidget {
   Widget _buildElevated() {
     return SizedBox(
       width: width ?? double.infinity,
+      height: height,
       child: icon != null
           ? ElevatedButton.icon(
               style:
@@ -182,6 +204,12 @@ class AppButton extends StatelessWidget {
               style:
                   style ??
                   AppButtonStyle.rounded15.copyWith(
+                    foregroundColor: MaterialStateProperty.all(
+                      foregroundColor ?? Colors.white,
+                    ),
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    ),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
@@ -200,7 +228,13 @@ class AppButton extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation(Colors.white),
                       ),
                     )
-                  : Text(text!),
+                  : Text(
+                      text!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: fontSize ?? 16.sp,
+                      ),
+                    ),
             ),
     );
   }
@@ -238,6 +272,7 @@ class AppButton extends StatelessWidget {
                       style: TextStyle(
                         color: textColor ?? AppStyle.primary,
                         fontWeight: FontWeight.w600,
+                        fontSize: fontSize ?? 16.sp,
                       ),
                     ),
             )
@@ -269,6 +304,7 @@ class AppButton extends StatelessWidget {
                       style: TextStyle(
                         color: textColor ?? AppStyle.primary,
                         fontWeight: FontWeight.w600,
+                        fontSize: fontSize ?? 16.sp,
                       ),
                     ),
             ),
@@ -280,6 +316,8 @@ class AppButton extends StatelessWidget {
       onTap: isLoading ? null : onTap,
       borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
       child: AppMaterialRound(
+        color: color ?? AppStyle.white,
+        elevation: elevation ?? 2.5,
         child: Padding(
           padding: EdgeInsets.all(padding ?? 8.r),
           child: isLoading

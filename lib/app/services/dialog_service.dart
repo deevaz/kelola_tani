@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
 class DialogService {
@@ -52,7 +54,7 @@ class DialogService {
           ),
         ),
       ),
-      barrierDismissible: false, // Biar user wajib klik OK
+      barrierDismissible: false,
     );
   }
 
@@ -188,7 +190,7 @@ class DialogService {
                       ),
                       onPressed: onCancel ?? () => Get.back(),
                       child: Text(
-                        'no'.tr,
+                        'Tidak',
                         style: TextStyle(color: Colors.grey.shade700),
                       ),
                     ),
@@ -204,7 +206,7 @@ class DialogService {
                       ),
                       onPressed: onConfirm,
                       child: Text(
-                        'yes'.tr,
+                        'Iya',
                         style: TextStyle(color: AppStyle.white),
                       ),
                     ),
@@ -396,7 +398,7 @@ class DialogService {
                         onConfirm(controller.text);
                       },
                       child: Text(
-                        'save'.tr,
+                        'Simpan',
                         style: TextStyle(color: AppStyle.white),
                       ),
                     ),
@@ -405,6 +407,113 @@ class DialogService {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  static void controlMode({
+    required RxString currentMode,
+    required RxString pumpMode,
+    required Function(String) onModeSelected,
+    required Function(String) onPumpModeSelected,
+  }) {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.r),
+        ),
+        child: AppMaterialRound(
+          paddingValue: 24.r,
+          radius: 30.r,
+
+          child: Obx(
+            () => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Kendali Pompa',
+                  style: AppFonts.lgBold.copyWith(fontSize: 24.sp),
+                ),
+                SizedBox(height: 30.h),
+                Row(
+                  children: [
+                    Text('Mode:', style: AppFonts.mdMedium),
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: _buildModeButton(
+                        label: 'Manual',
+                        isSelected: currentMode.value == 'Manual',
+                        onTap: () => onModeSelected('Manual'),
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildModeButton(
+                        label: 'Otomatis',
+                        isSelected: currentMode.value == 'Otomatis',
+                        onTap: () {
+                          onModeSelected('Otomatis');
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+
+                Visibility(
+                  visible: currentMode.value != 'Otomatis',
+                  child: AppButton(
+                    onTap: () {
+                      if (pumpMode.value == 'Hidup') {
+                        onPumpModeSelected('Mati');
+                      } else {
+                        onPumpModeSelected('Hidup');
+                      }
+                    },
+                    text: pumpMode.value == 'Hidup'
+                        ? 'Matikan Pompa'
+                        : 'Hidupkan Pompa',
+                    width: double.infinity,
+                    style: AppButtonStyle.rounded15.copyWith(
+                      backgroundColor: WidgetStateProperty.all(
+                        pumpMode.value == 'Hidup'
+                            ? AppStyle.danger
+                            : AppStyle.primary,
+                      ),
+                      foregroundColor: WidgetStateProperty.all(AppStyle.white),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildModeButton({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return AppButton(
+      onTap: onTap,
+      text: label,
+      height: 45.h,
+      textColor: isSelected ? AppStyle.white : AppStyle.primary,
+      fontSize: 15.sp,
+      style: AppButtonStyle.rounded15.copyWith(
+        backgroundColor: WidgetStateProperty.all(
+          isSelected ? AppStyle.primary : AppStyle.light,
+        ),
+        foregroundColor: WidgetStateProperty.all(
+          isSelected ? AppStyle.white : AppStyle.primary,
+        ),
+        padding: WidgetStateProperty.all(
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );

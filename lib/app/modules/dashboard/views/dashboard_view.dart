@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/dashboard/views/scan_device_view.dart';
+import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
-// import 'package:kelola_tani/app/core/services/snackbar_service.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -24,31 +26,22 @@ class DashboardView extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.topRight,
-                  child: AppMaterialRound(
-                    radius: 12.r,
-                    color: Colors.white.withOpacity(0.2),
-                    paddingValue: 8.r,
+                  child: AppButton.icon(
                     elevation: 0,
-                    child: Icon(
-                      Ionicons.grid_outline,
-                      color: AppStyle.white,
-                      size: 24.sp,
-                    ),
+                    color: AppStyle.white.withOpacity(0.3),
+                    onTap: () => Get.toNamed('/account'),
+                    icon: Icon(Ionicons.person, color: AppStyle.white),
                   ),
                 ),
                 SizedBox(height: 20.h),
                 Row(
                   children: [
-                    AppMaterialRound(
-                      height: 70.w,
-                      width: 70.w,
-                      radius: 20.r,
-                      color: Colors.white.withOpacity(0.2),
-                      elevation: 0,
-                      child: Icon(
-                        Ionicons.person,
-                        color: AppStyle.white,
-                        size: 35.sp,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.r),
+                      child: Image.asset(
+                        'assets/icons/app_icon.png',
+                        height: 70.w,
+                        width: 70.w,
                       ),
                     ),
                     SizedBox(width: 16.w),
@@ -56,18 +49,15 @@ class DashboardView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Selamat Datang",
-                          style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppStyle.white,
+                          'Selamat Datang',
+                          style: AppFonts.xxlBold.copyWith(
+                            color: AppStyle.surface,
                           ),
                         ),
                         Text(
-                          "Petani Modern", // Nama Akun
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white70,
+                          'Petani Modern',
+                          style: AppFonts.mdRegular.copyWith(
+                            color: AppStyle.surface.withOpacity(0.8),
                           ),
                         ),
                       ],
@@ -94,16 +84,8 @@ class DashboardView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Daftar Perangkat",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppStyle.dark,
-                    ),
-                  ),
+                  Text('Daftar Perangkat', style: AppFonts.mdMedium),
                   SizedBox(height: 20.h),
-
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 3,
@@ -112,10 +94,18 @@ class DashboardView extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       children: [
                         _buildDeviceCard(
-                          "Node Suhu",
-                          Ionicons.thermometer_outline,
+                          'Perangkat 1',
+                          Ionicons.hardware_chip_outline,
+                          () {
+                            Get.toNamed(
+                              '/device-detail',
+                              arguments: {
+                                'deviceId': '12345',
+                                'deviceName': 'Perangkat 1',
+                              },
+                            );
+                          },
                         ),
-                        _buildDeviceCard("Node Air", Ionicons.water_outline),
                         _buildAddCard(),
                       ],
                     ),
@@ -129,12 +119,13 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildDeviceCard(String label, IconData icon) {
+  Widget _buildDeviceCard(String label, IconData icon, VoidCallback? onTap) {
     return AppMaterialRound(
       color: AppStyle.light,
       radius: 16.r,
       elevation: 2,
-      onTap: () {},
+      onTap: onTap,
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -147,15 +138,7 @@ class DashboardView extends StatelessWidget {
             child: Icon(icon, color: AppStyle.primary, size: 22.sp),
           ),
           SizedBox(height: 12.h),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
-              color: AppStyle.dark,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          Text(label, style: AppFonts.smMedium, textAlign: TextAlign.center),
         ],
       ),
     );
@@ -163,11 +146,11 @@ class DashboardView extends StatelessWidget {
 
   Widget _buildAddCard() {
     return AppMaterialRound(
+      onTap: () => Get.to(ScanDeviceView()),
       color: AppStyle.primary.withOpacity(0.1),
       radius: 16.r,
       elevation: 0,
       borderColor: AppStyle.primary.withOpacity(0.3),
-      onTap: () {},
       child: Center(
         child: Icon(Ionicons.add_circle, size: 40.sp, color: AppStyle.primary),
       ),

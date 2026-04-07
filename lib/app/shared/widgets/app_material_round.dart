@@ -10,6 +10,7 @@ class AppMaterialRound extends StatelessWidget {
   final double? radius;
   final double? elevation;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final Color? color;
   final Color? borderColor;
   const AppMaterialRound({
@@ -22,6 +23,7 @@ class AppMaterialRound extends StatelessWidget {
     this.elevation,
     this.paddingValue = 0,
     this.onTap,
+    this.onLongPress,
     this.borderColor,
   });
 
@@ -29,6 +31,7 @@ class AppMaterialRound extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Material(
         color: color ?? AppStyle.white,
         borderRadius: BorderRadius.circular(radius ?? 15.r),

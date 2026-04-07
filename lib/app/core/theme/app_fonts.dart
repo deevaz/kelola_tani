@@ -120,10 +120,17 @@ abstract class AppFonts {
     );
   }
 
-  static TextStyle get xlSemiBold {
+  static TextStyle get xlBold {
     return _default.copyWith(
       fontSize: _fontSize.x18,
       fontWeight: FontWeight.w700,
+    );
+  }
+
+  static TextStyle get xlSemiBold {
+    return _default.copyWith(
+      fontSize: _fontSize.x18,
+      fontWeight: FontWeight.w600,
     );
   }
 

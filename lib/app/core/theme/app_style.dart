@@ -17,7 +17,8 @@ class AppStyle {
   static const Color info = Color(0xFF0EA5E9); // Sky Blue (Informasi Umum)
 
   // Permukaan & Latar Belakang (Neutral)
-  static const Color light = Color(0xFFF8FAFC); // Cloud White (Background)
+  // Di AppStyle kamu, ubah bagian light:
+  static const Color light = Color(0xFFF1F5F9);
   static const Color dark = Color(0xFF0F172A); // Rich Navy (Dark Mode/OLED)
   static const Color white = Color(0xFFFFFFFF);
   static const Color grey = Color(0xFF64748B); // Slate Grey (Text Body)
