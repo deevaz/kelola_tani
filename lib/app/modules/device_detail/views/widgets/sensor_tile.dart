@@ -22,7 +22,7 @@ class SensorTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppMaterialRound(
       color: AppStyle.white,
-      paddingValue: 8.r,
+      paddingValue: 5.r,
       radius: 15.r,
       elevation: 2,
       child: Row(

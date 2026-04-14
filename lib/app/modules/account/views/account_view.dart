@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -5,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
+import 'package:kelola_tani/app/modules/home/controllers/home_controller.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
@@ -46,13 +49,25 @@ class AccountView extends GetView<AccountController> {
                   child: Column(
                     children: [
                       CircleAvatar(
-                        radius: 50.r,
-                        backgroundImage: const NetworkImage(
-                          'https://i.pravatar.cc/300',
-                        ),
+                        radius: 40,
+                        backgroundImage: controller.photoURL != null
+                            ? NetworkImage(controller.photoURL!)
+                            : null,
+                        child: controller.photoURL == null
+                            ? Text(
+                                FirebaseAuth.instance.currentUser?.displayName
+                                        ?.substring(0, 1)
+                                        .toUpperCase() ??
+                                    '?',
+                                style: const TextStyle(fontSize: 24),
+                              )
+                            : null,
                       ),
                       const Spacer(),
-                      Text('admin@gmail.com', style: AppFonts.xlBold),
+                      Text(
+                        controller.user?.displayName ?? 'User',
+                        style: AppFonts.xlBold,
+                      ),
                     ],
                   ),
                 ),
@@ -85,7 +100,7 @@ class AccountView extends GetView<AccountController> {
                 ),
                 SizedBox(height: 5.h),
                 AppButton(
-                  onTap: () {},
+                  onTap: () => AuthController.to.logout(),
                   text: 'Keluar',
                   style: AppButtonStyle.rounded15.copyWith(
                     backgroundColor: WidgetStatePropertyAll(AppStyle.danger),

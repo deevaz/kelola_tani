@@ -27,7 +27,7 @@ class DetailCard extends StatelessWidget {
     return Expanded(
       child: AppMaterialRound(
         color: AppStyle.white,
-        paddingValue: 12.r,
+        paddingValue: 8.r,
         radius: 15.r,
         child: Row(
           children: [

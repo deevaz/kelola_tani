@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
+import 'package:kelola_tani/app/modules/home/controllers/home_controller.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeContainer extends StatelessWidget {
+class HomeContainer extends GetView<HomeController> {
   const HomeContainer({super.key});
 
   @override
@@ -89,11 +91,7 @@ class HomeContainer extends StatelessWidget {
                     icon: Icon(Ionicons.logo_google, color: AppStyle.dark),
                     text: 'Masuk dengan Akun Google',
                     textColor: AppStyle.dark,
-                    onTap: () {
-                      // Get.find<AuthService>().setGuestMode(true);
-                      // SnackbarService.info('welcome'.tr, 'guest-mode'.tr);
-                      // Get.offAllNamed(Routes.BASE, arguments: 'guest_mode');
-                    },
+                    onTap: () => AuthController.to.signInWithGoogle(),
                   ),
                 ),
                 SizedBox(height: 20.h),

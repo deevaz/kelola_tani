@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class AccountController extends GetxController {
-  //TODO: Implement AccountController
+  final user = FirebaseAuth.instance.currentUser;
+  final photoURL = FirebaseAuth.instance.currentUser?.photoURL;
 
   final count = 0.obs;
   @override

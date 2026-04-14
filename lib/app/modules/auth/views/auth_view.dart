@@ -150,28 +150,25 @@ class AuthView extends GetView<AuthController> {
                 () => AppButton(
                   isLoading: controller.loginState.value is ResultLoading,
                   onTap: () {
-                    Get.toNamed('/dashboard');
-                    // if (isLogin) {
-                    //   controller.login(
-                    //     onFailed: (message) =>
-                    //         SnackbarService.error('login-failed'.tr, message),
-                    //     onSuccess: () => SnackbarService.success(
-                    //       'login-success'.tr,
-                    //       'welcome-back'.tr,
-                    //     ),
-                    //   );
-                    // } else {
-                    //   controller.register(
-                    //     onFailed: (message) => SnackbarService.error(
-                    //       'registration-failed'.tr,
-                    //       message,
-                    //     ),
-                    //     onSuccess: () => SnackbarService.success(
-                    //       'registration-success'.tr,
-                    //       'you-can-login-now'.tr,
-                    //     ),
-                    //   );
-                    // }
+                    if (isLogin) {
+                      controller.login(
+                        onFailed: (message) =>
+                            SnackbarService.error('Login Gagal', message),
+                        onSuccess: () => SnackbarService.success(
+                          'Berhasil',
+                          'Selamat datang!',
+                        ),
+                      );
+                    } else {
+                      controller.register(
+                        onFailed: (message) =>
+                            SnackbarService.error('Registrasi Gagal', message),
+                        onSuccess: () => SnackbarService.success(
+                          'Berhasil',
+                          'Akun berhasil dibuat!',
+                        ),
+                      );
+                    }
                   },
                   text: isLogin ? 'Masuk' : 'Daftar',
                 ),

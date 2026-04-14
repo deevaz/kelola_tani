@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:kelola_tani/app/core/utils/app_initializer.dart';
+import 'package:kelola_tani/firebase_options.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppInitializer.init();
   runApp(
     ScreenUtilInit(
       designSize: const Size(414, 896),
@@ -14,7 +20,9 @@ void main() {
       builder: (context, child) {
         return GetMaterialApp(
           title: "Kelola Tani",
-          initialRoute: AppPages.INITIAL,
+          initialRoute: FirebaseAuth.instance.currentUser == null
+              ? '/home'
+              : '/dashboard',
           getPages: AppPages.routes,
         );
       },

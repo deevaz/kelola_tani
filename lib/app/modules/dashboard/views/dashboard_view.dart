@@ -67,7 +67,6 @@ class DashboardView extends StatelessWidget {
               ],
             ),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
