@@ -4,11 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
-import 'package:kelola_tani/app/modules/dashboard/views/scan_device_view.dart';
+import 'package:kelola_tani/app/modules/dashboard/controllers/dashboard_controller.dart';
+import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
 
   @override
@@ -55,7 +56,7 @@ class DashboardView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Petani Modern',
+                          controller.user?.displayName ?? 'Petani Modern',
                           style: AppFonts.mdRegular.copyWith(
                             color: AppStyle.surface.withOpacity(0.8),
                           ),
@@ -86,28 +87,37 @@ class DashboardView extends StatelessWidget {
                   Text('Daftar Perangkat', style: AppFonts.mdMedium),
                   SizedBox(height: 20.h),
                   Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 16.w,
-                      mainAxisSpacing: 16.h,
-                      padding: EdgeInsets.zero,
-                      children: [
-                        _buildDeviceCard(
-                          'Perangkat 1',
-                          Ionicons.hardware_chip_outline,
-                          () {
-                            Get.toNamed(
-                              '/device-detail',
-                              arguments: {
-                                'deviceId': '12345',
-                                'deviceName': 'Perangkat 1',
-                              },
-                            );
-                          },
-                        ),
-                        _buildAddCard(),
-                      ],
-                    ),
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      return GridView.count(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16.w,
+                        mainAxisSpacing: 16.h,
+                        padding: EdgeInsets.zero,
+                        children: [
+                          ...controller.devices.map(
+                            (device) => _buildDeviceCard(
+                              device.name,
+                              Ionicons.hardware_chip_outline,
+                              () => controller.goToDetail(device),
+                              () => DialogService.confirmation(
+                                title: 'Hapus Perangkat',
+                                message:
+                                    'Apakah Anda yakin ingin menghapus perangkat "${device.name}"?',
+                                onConfirm: () {
+                                  controller.deleteDevice(device);
+                                  Get.back();
+                                },
+                              ),
+                            ),
+                          ),
+                          _buildAddCard(controller),
+                        ],
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -118,12 +128,18 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildDeviceCard(String label, IconData icon, VoidCallback? onTap) {
+  Widget _buildDeviceCard(
+    String label,
+    IconData icon,
+    VoidCallback? onTap,
+    VoidCallback? onLongPress,
+  ) {
     return AppMaterialRound(
       color: AppStyle.white,
       radius: 16.r,
       elevation: 2,
       onTap: onTap,
+      onLongPress: onLongPress,
 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -143,9 +159,9 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildAddCard() {
+  Widget _buildAddCard(DashboardController controller) {
     return AppMaterialRound(
-      onTap: () => Get.to(ScanDeviceView()),
+      onTap: () => Get.toNamed('/scan-device'),
       color: AppStyle.primary.withOpacity(0.1),
       radius: 16.r,
       elevation: 0,

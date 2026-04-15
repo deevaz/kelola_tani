@@ -17,7 +17,7 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  final loginState = Rx<ResultState<User?>>(const ResultState.initial());
+  final loginState = Rx<ResultState<User?>>(const ResultInitial());
 
   bool get isLoading => loginState.value is ResultLoading;
 
@@ -31,7 +31,7 @@ class AuthController extends GetxController {
     final currentUser = _auth.currentUser;
     if (currentUser != null) {
       Get.offAllNamed('/dashboard');
-      loginState.value = ResultState.success(currentUser);
+      loginState.value = ResultSuccess(currentUser);
     }
   }
 
@@ -42,14 +42,14 @@ class AuthController extends GetxController {
     if (!formKey.currentState!.validate()) return;
 
     try {
-      loginState.value = const ResultState.loading();
+      loginState.value = const ResultLoading();
 
       await _auth.signInWithEmailAndPassword(
         email: usernameController.text.trim(),
         password: passwordController.text.trim(),
       );
 
-      loginState.value = ResultState.success(_auth.currentUser);
+      loginState.value = ResultSuccess(_auth.currentUser);
       onSuccess();
       Get.offAllNamed('/dashboard');
     } on FirebaseAuthException catch (e) {
@@ -58,7 +58,7 @@ class AuthController extends GetxController {
       if (e.code == 'wrong-password') message = 'Password salah';
       if (e.code == 'invalid-email') message = 'Email tidak valid';
 
-      loginState.value = ResultState.failed(message);
+      loginState.value = ResultFailed(message);
       onFailed(message);
     }
   }
@@ -70,7 +70,7 @@ class AuthController extends GetxController {
     if (!formKey.currentState!.validate()) return;
 
     try {
-      loginState.value = const ResultState.loading();
+      loginState.value = ResultLoading();
 
       final UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(
@@ -90,7 +90,7 @@ class AuthController extends GetxController {
             'createdAt': FieldValue.serverTimestamp(),
           });
 
-      loginState.value = ResultState.success(userCredential.user);
+      loginState.value = ResultSuccess(userCredential.user);
       onSuccess();
       Get.offAllNamed('/dashboard');
     } on FirebaseAuthException catch (e) {
@@ -101,23 +101,21 @@ class AuthController extends GetxController {
       }
       if (e.code == 'invalid-email') message = 'Format email tidak valid';
 
-      loginState.value = ResultState.failed(message);
+      loginState.value = ResultFailed(message);
       onFailed(message);
     } on FirebaseException catch (e) {
-      loginState.value = ResultState.failed(
-        e.message ?? 'Gagal menyimpan data',
-      );
+      loginState.value = ResultFailed(e.message ?? 'Gagal menyimpan data');
       onFailed(e.message ?? 'Gagal menyimpan data');
     }
   }
 
   Future<User?> signInWithGoogle() async {
     try {
-      loginState.value = const ResultState.loading();
+      loginState.value = const ResultLoading();
 
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        loginState.value = const ResultState.initial();
+        loginState.value = const ResultFailed('Login dibatalkan');
         return null;
       }
 
@@ -137,10 +135,10 @@ class AuthController extends GetxController {
         Get.offAllNamed('/dashboard');
       }
 
-      loginState.value = ResultState.success(userCredential.user);
+      loginState.value = ResultSuccess(userCredential.user);
       return userCredential.user;
     } catch (e) {
-      loginState.value = ResultState.failed(e.toString());
+      loginState.value = ResultFailed(e.toString());
       return null;
     }
   }
@@ -148,7 +146,7 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
-    loginState.value = const ResultState.initial();
+    loginState.value = const ResultFailed('Login dibatalkan');
     Get.offAllNamed('/home');
   }
 

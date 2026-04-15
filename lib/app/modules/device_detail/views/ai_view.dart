@@ -9,7 +9,7 @@ import 'package:kelola_tani/app/shared/widgets/app_header.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 import 'package:kelola_tani/app/shared/widgets/app_text_field.dart';
 
-class AiView extends GetView {
+class AiView extends GetView<AiController> {
   const AiView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class AiView extends GetView {
 
               child: Center(
                 child: Text(
-                  'Perangkat: Prgkt 1',
+                  'Perangkat: ${controller.deviceName}',
                   style: AppFonts.smBold.copyWith(color: AppStyle.white),
                 ),
               ),

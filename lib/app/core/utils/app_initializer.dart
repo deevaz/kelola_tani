@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
+import 'package:kelola_tani/app/services/firestore_service.dart';
 import 'package:kelola_tani/firebase_options.dart';
 
 class AppInitializer {
@@ -11,6 +13,8 @@ class AppInitializer {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+
+      await initializeDateFormatting('id_ID', null);
       await Future.wait([_initNetwork()]);
       await _initServices();
       await _initRepositories();
@@ -29,6 +33,7 @@ class AppInitializer {
   }
 
   static Future<void> _initServices() async {
+    Get.put(FirestoreService());
     // Logger().i("Services Initialized");
   }
 

@@ -1,11 +1,21 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class ResultState<T> {
+  const ResultState();
+}
 
-part 'result_state.freezed.dart';
+class ResultInitial<T> extends ResultState<T> {
+  const ResultInitial();
+}
 
-@Freezed()
-sealed class ResultState<T> with _$ResultState<T> {
-  const factory ResultState.initial() = ResultInitial;
-  const factory ResultState.loading() = ResultLoading;
-  const factory ResultState.success(T data) = ResultSuccess<T>;
-  const factory ResultState.failed([String? message]) = ResultFailed;
+class ResultLoading<T> extends ResultState<T> {
+  const ResultLoading();
+}
+
+class ResultSuccess<T> extends ResultState<T> {
+  final T data;
+  const ResultSuccess(this.data);
+}
+
+class ResultFailed<T> extends ResultState<T> {
+  final String? message;
+  const ResultFailed([this.message]);
 }

@@ -10,7 +10,15 @@ import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 class NotesCard extends StatelessWidget {
   final String time;
   final String content;
-  const NotesCard({super.key, required this.time, required this.content});
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  const NotesCard({
+    super.key,
+    required this.time,
+    required this.content,
+    required this.onEdit,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,27 +44,13 @@ class NotesCard extends StatelessWidget {
                   icon: Ionicons.pencil_outline,
                   color: AppStyle.secondary,
                   label: 'Edit',
-                  onTap: () {
-                    DialogService.noteForm(
-                      title: 'Edit Catatan',
-                      initialTime: DateTime.now(),
-                      initialContent:
-                          'Ini adalah catatan untuk perangkat Prgkt 1.',
-                      onConfirm: (time, content) {},
-                    );
-                  },
+                  onTap: onEdit,
                 ),
                 _buildCustomSlidableAction(
                   icon: Ionicons.trash_outline,
                   color: AppStyle.danger,
                   label: 'Hapus',
-                  onTap: () {
-                    DialogService.confirmation(
-                      title: 'Hapus Catatan',
-                      message: 'Apakah Anda yakin ingin menghapus catatan ini?',
-                      onConfirm: () {},
-                    );
-                  },
+                  onTap: onDelete,
                 ),
               ],
             ),
@@ -67,12 +61,9 @@ class NotesCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('1 Maret 2026 - 14:45', style: AppFonts.lgSemiBold),
+                    Text(time, style: AppFonts.lgSemiBold),
                     SizedBox(height: 8.h),
-                    Text(
-                      'Ini adalah catatan untuk perangkat Prgkt 1.',
-                      style: AppFonts.mdRegular,
-                    ),
+                    Text(content, style: AppFonts.mdRegular),
                   ],
                 ),
               ),

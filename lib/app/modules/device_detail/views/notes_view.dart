@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-
-import 'package:kelola_tani/app/core/theme/app_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
-import 'package:kelola_tani/app/modules/device_detail/controllers/notes_controller.dart';
-import 'package:kelola_tani/app/modules/device_detail/views/widgets/notes_card.dart';
+import 'package:kelola_tani/app/core/theme/app_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kelola_tani/app/services/app_refresher.dart';
 import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_header.dart';
+import 'package:kelola_tani/app/modules/device_detail/views/widgets/notes_card.dart';
+import 'package:kelola_tani/app/modules/device_detail/controllers/notes_controller.dart';
 
-class NotesView extends GetView {
+class NotesView extends GetView<NotesController> {
   const NotesView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class NotesView extends GetView {
 
               child: Center(
                 child: Text(
-                  'Perangkat: Prgkt 1',
+                  'Perangkat: ${controller.deviceName}',
                   style: AppFonts.smBold.copyWith(color: AppStyle.white),
                 ),
               ),
@@ -52,7 +50,7 @@ class NotesView extends GetView {
             initialTime: DateTime.now(),
             initialContent: '',
             onConfirm: (time, content) {
-              Get.find<NotesController>().addNote(time, content);
+              controller.addNote(time, content);
             },
           );
         },
@@ -64,23 +62,36 @@ class NotesView extends GetView {
 }
 
 Widget _buildDashboardGrid() {
-  final controller = Get.find<NotesController>();
+  final ctrl = Get.find<NotesController>();
   return Obx(() {
     return AppRefresher(
-      isEmpty: controller.notesList.isEmpty,
+      isEmpty: ctrl.notesList.isEmpty,
       onRefresh: () async {
-        await controller.fetchNotes();
+        await ctrl.fetchNotes();
       },
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-        itemCount: controller.notesList.length,
+        itemCount: ctrl.notesList.length,
         separatorBuilder: (context, index) => SizedBox(height: 12.h),
         itemBuilder: (context, index) {
-          final note = controller.notesList[index];
+          final note = ctrl.notesList[index];
 
           return NotesCard(
-            time: note['time'].toString(),
-            content: note['content'] ?? '',
+            time: note.formattedFullDateTime,
+            content: note.content,
+            onDelete: () => DialogService.confirmation(
+              title: 'Hapus Catatan',
+              message: 'Apakah Anda yakin ingin menghapus catatan ini?',
+              onConfirm: () => ctrl.deleteNote(note.noteId),
+            ),
+            onEdit: () => DialogService.noteForm(
+              title: 'Edit Catatan',
+              initialTime: note.createdAt,
+              initialContent: note.content,
+              onConfirm: (newTime, newContent) {
+                ctrl.editNote(note, newTime, newContent);
+              },
+            ),
           );
         },
       ),

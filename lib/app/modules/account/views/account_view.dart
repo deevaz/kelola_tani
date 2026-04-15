@@ -7,7 +7,6 @@ import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
-import 'package:kelola_tani/app/modules/home/controllers/home_controller.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 

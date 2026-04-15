@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 class AiController extends GetxController {
   final RxBool showRecommendations = false.obs;
+  String deviceName = Get.arguments?['deviceName'] ?? 'Perangkat';
 
   @override
   void onInit() {

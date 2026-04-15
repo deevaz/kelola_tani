@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:kelola_tani/app/modules/dashboard/bindings/scan_device_binding.dart';
+import 'package:kelola_tani/app/modules/dashboard/views/scan_device_view.dart';
 import 'package:kelola_tani/app/modules/device_detail/bindings/ai_binding.dart';
 import 'package:kelola_tani/app/modules/device_detail/bindings/notes_binding.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/ai_view.dart';
@@ -33,6 +35,11 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: '/scan-device',
+      page: () => const ScanDeviceView(),
+      binding: ScanDeviceBinding(),
     ),
     GetPage(
       name: _Paths.ACCOUNT,
