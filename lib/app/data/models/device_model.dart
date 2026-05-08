@@ -15,6 +15,15 @@ class DeviceModel {
     this.lastSeen,
   });
 
+  bool get isOnline {
+    if (lastSeen == null) return false;
+
+    final threshold = Duration(minutes: 2);
+    final difference = DateTime.now().difference(lastSeen!);
+
+    return difference < threshold;
+  }
+
   factory DeviceModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return DeviceModel(

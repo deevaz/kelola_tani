@@ -8,12 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:711528601248:android:f197190f347a3c05345bc5",
+        "mobilesdk_app_id": "1:711528601248:android:14d7b4a2ada027d0345bc5",
         "android_client_info": {
-          "package_name": "com.example.kelola_tani"
+          "package_name": "com.deevaz.kelolatani"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "711528601248-eff1q7e4i1l25rdut8qr53au38uavt63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDDGG2osBqKtoQYjSY3ZPZIqG35dRj9lVE"
@@ -21,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711528601248-eff1q7e4i1l25rdut8qr53au38uavt63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

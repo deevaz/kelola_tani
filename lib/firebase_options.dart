@@ -54,11 +54,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDDGG2osBqKtoQYjSY3ZPZIqG35dRj9lVE',
-    appId: '1:711528601248:android:f197190f347a3c05345bc5',
+    appId: '1:711528601248:android:14d7b4a2ada027d0345bc5',
     messagingSenderId: '711528601248',
     projectId: 'precision-farming-682c2',
-    databaseURL:
-        'https://precision-farming-682c2-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://precision-farming-682c2-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'precision-farming-682c2.firebasestorage.app',
   );
+
 }

@@ -30,7 +30,9 @@ class DashboardView extends GetView<DashboardController> {
                   child: AppButton.icon(
                     elevation: 0,
                     color: AppStyle.white.withOpacity(0.3),
-                    onTap: () => Get.toNamed('/account'),
+                    onTap: () {
+                      // Get.toNamed('/account');
+                    },
                     icon: Icon(Ionicons.person, color: AppStyle.white),
                   ),
                 ),

@@ -18,7 +18,7 @@ class HomeContainer extends GetView<HomeController> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: 370.h,
+        height: 300.h,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -50,41 +50,7 @@ class HomeContainer extends GetView<HomeController> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 25.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10.w,
-                  children: [
-                    Expanded(
-                      child: AppButton.outlined(
-                        borderRadius: 30.r,
-                        onTap: () => Get.toNamed('/auth', arguments: true),
-                        text: 'Masuk',
-                      ),
-                    ),
-                    Expanded(
-                      child: AppButton(
-                        borderRadius: 30.r,
-                        onTap: () => Get.toNamed('/auth', arguments: false),
-                        text: 'Daftar',
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Row(
-                  spacing: 10.w,
-                  children: [
-                    Expanded(
-                      child: Divider(height: 0.5.h, color: AppStyle.grey),
-                    ),
-                    Text('or'.tr),
-                    Expanded(
-                      child: Divider(height: 0.5.h, color: AppStyle.grey),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 45.h),
                 Flexible(
                   child: AppButton.outlined(
                     borderRadius: 30.r,

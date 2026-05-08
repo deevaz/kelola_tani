@@ -28,8 +28,9 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Obx(
-                () => AppHeader(
+              Obx(() {
+                final onlineStatus = controller.isDeviceOnline.value;
+                return AppHeader(
                   leading: Row(
                     children: [
                       Text(
@@ -41,7 +42,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                       SizedBox(width: 5.w),
                       Icon(
                         Icons.circle,
-                        color: controller.device.value?.status == 'online'
+                        color: onlineStatus
                             ? AppStyle.secondary
                             : AppStyle.danger,
                         size: 12.sp,
@@ -56,8 +57,8 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                       width: 40.w,
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
               _buildDashboardGrid(controller),
             ],
           ),
@@ -147,7 +148,6 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
               ],
             ),
           ),
-
           SizedBox(height: 20.h),
           Row(
             children: [
@@ -159,20 +159,16 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                   DialogService.controlMode(
                     currentMode: controller.currentMode,
                     pumpMode: controller.pumpMode,
-
                     onPumpModeSelected: (newPumpMode) {
                       controller.updatePumpMode(newPumpMode);
-
                       String textFromDialog = newPumpMode.trim().toLowerCase();
                       String action =
                           (textFromDialog == 'nyala' ||
                               textFromDialog == 'hidup')
                           ? 'on'
                           : 'off';
-
                       controller.sendPumpCommand(action);
                     },
-
                     onModeSelected: (newMode) {
                       controller.updateMode(newMode);
                     },

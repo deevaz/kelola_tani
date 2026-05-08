@@ -1,7 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-
-import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
 import 'package:kelola_tani/app/services/firestore_service.dart';
@@ -21,34 +19,22 @@ class AppInitializer {
       await _initGlobalController();
 
       await _initNotifications();
-
-      // Logger().i("App Initialization Completed Successfully");
-    } catch (e) {
-      // Logger().e("App Initialization Failed: $e");
-    }
+    } catch (e) {}
   }
 
-  static Future<void> _initNetwork() async {
-    // Logger().i("Network/Core Initialized");
-  }
+  static Future<void> _initNetwork() async {}
 
   static Future<void> _initServices() async {
     Get.put(FirestoreService());
-    // Logger().i("Services Initialized");
   }
 
-  static Future<void> _initRepositories() async {
-    // Logger().i("Repositories Initialized");
-  }
+  static Future<void> _initRepositories() async {}
 
   static Future<void> _initGlobalController() async {
     Get.put(AuthController(), permanent: true);
-    // Logger().i("Global Controllers Initialized");
   }
 
-  static Future<void> dispose() async {
-    // Logger().i("App Resources Disposed");
-  }
+  static Future<void> dispose() async {}
 
   static Future<void> _initNotifications() async {}
 }

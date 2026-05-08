@@ -306,4 +306,11 @@ class FirestoreService {
   Future<void> deleteNote(String uid, String deviceId, String noteId) async {
     await _noteRef(uid, deviceId).doc(noteId).delete();
   }
+
+  Stream<DeviceModel?> streamSingleDevice(String uid, String deviceId) {
+    return _deviceRef(uid).doc(deviceId).snapshots().map((doc) {
+      if (!doc.exists) return null;
+      return DeviceModel.fromFirestore(doc);
+    });
+  }
 }

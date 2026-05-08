@@ -39,10 +39,19 @@ class DeviceDetailController extends GetxController {
   StreamSubscription? _chartSub;
   StreamSubscription? _tableSub;
 
+  Timer? _statusTimer;
+  final isDeviceOnline = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     _listenToFirestore();
+
+    _statusTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (device.value != null) {
+        isDeviceOnline.value = device.value!.isOnline;
+      }
+    });
 
     final now = DateTime.now();
     final todayRange = DateTimeRange(
@@ -200,15 +209,35 @@ class DeviceDetailController extends GetxController {
   }
 
   Future<void> onRefresh() async {
+    final isOnline = device.value?.isOnline ?? false;
+
+    if (!isOnline) {
+      SnackbarService.error(
+        'Gagal',
+        'Perangkat sedang offline. Tidak dapat meminta pembaruan data.',
+      );
+      return;
+    }
     try {
       await _firestore.triggerManualUpdate(uid, deviceId);
-      SnackbarService.success('Berhasil', 'Data terbaru telah dimuat');
+      SnackbarService.success(
+        'Permintaan Dikirim',
+        'Menunggu respon dari perangkat...',
+      );
     } catch (e) {
       SnackbarService.error('Gagal', 'Gagal memuat data terbaru');
     }
   }
 
   void _listenToFirestore() {
+    device.bindStream(_firestore.streamSingleDevice(uid, deviceId));
+
+    ever(device, (data) {
+      if (data != null) {
+        isDeviceOnline.value = data.isOnline;
+      }
+    });
+
     _firestore.streamDevices(uid).listen((devices) {
       final currentDevice = devices.firstWhereOrNull(
         (d) => d.deviceId == deviceId,
@@ -304,6 +333,7 @@ class DeviceDetailController extends GetxController {
 
   @override
   void onClose() {
+    _statusTimer?.cancel();
     super.onClose();
   }
 }

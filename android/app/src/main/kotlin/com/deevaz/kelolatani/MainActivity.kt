@@ -1,4 +1,4 @@
-package com.example.kelola_tani
+package com.deevaz.kelolatani
 
 import io.flutter.embedding.android.FlutterActivity
 
