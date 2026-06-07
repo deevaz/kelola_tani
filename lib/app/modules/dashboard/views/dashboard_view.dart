@@ -31,7 +31,7 @@ class DashboardView extends GetView<DashboardController> {
                     elevation: 0,
                     color: AppStyle.white.withOpacity(0.3),
                     onTap: () {
-                      // Get.toNamed('/account');
+                      Get.toNamed('/account');
                     },
                     icon: Icon(Ionicons.person, color: AppStyle.white),
                   ),

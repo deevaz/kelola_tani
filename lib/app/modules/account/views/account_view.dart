@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/modules/account/views/privacy_policy_view.dart';
 import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
+import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
@@ -21,7 +21,7 @@ class AccountView extends GetView<AccountController> {
         children: [
           Container(
             width: double.infinity,
-            height: 60.h,
+            height: 80.h,
             decoration: BoxDecoration(
               color: AppStyle.primary,
               borderRadius: BorderRadius.only(
@@ -42,10 +42,11 @@ class AccountView extends GetView<AccountController> {
               spacing: 15.h,
               children: [
                 AppMaterialRound(
-                  height: 170.h,
+                  height: 190.h,
                   width: double.infinity,
                   paddingValue: 15.r,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
                         radius: 40,
@@ -62,48 +63,65 @@ class AccountView extends GetView<AccountController> {
                               )
                             : null,
                       ),
-                      const Spacer(),
+                      SizedBox(height: 10.h),
                       Text(
                         controller.user?.displayName ?? 'User',
                         style: AppFonts.xlBold,
+                      ),
+                      // Tambahan Email
+                      Text(
+                        controller.user?.email ?? 'Tidak ada email',
+                        style: AppFonts.mdRegular.copyWith(color: Colors.grey),
                       ),
                     ],
                   ),
                 ),
                 AppMaterialRound(
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                    leading: const Icon(Icons.person),
-                    title: Text('Ganti Password', style: AppFonts.lgSemiBold),
-                    onTap: () {},
-                  ),
-                ),
-                AppMaterialRound(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                    leading: const Icon(Icons.update),
-                    title: Text(
-                      'Periksa Pembaruan',
-                      style: AppFonts.lgSemiBold,
-                    ),
-                    onTap: () {},
-                  ),
-                ),
-                AppMaterialRound(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
                     leading: const Icon(Icons.build),
                     title: Text('Perawatan Alat', style: AppFonts.lgSemiBold),
                     onTap: () {},
                   ),
                 ),
-                SizedBox(height: 5.h),
-                AppButton(
-                  onTap: () => AuthController.to.logout(),
-                  text: 'Keluar',
-                  style: AppButtonStyle.rounded15.copyWith(
-                    backgroundColor: WidgetStatePropertyAll(AppStyle.danger),
+                AppMaterialRound(
+                  child: ListTile(
+                    leading: const Icon(Icons.privacy_tip_outlined),
+                    title: Text(
+                      'Kebijakan Privasi',
+                      style: AppFonts.lgSemiBold,
+                    ),
+                    onTap: () {
+                      Get.to(() => const PrivacyPolicyView());
+                    },
                   ),
+                ),
+                SizedBox(height: 15.h),
+                AppButton(
+                  onTap: () => DialogService.confirmation(
+                    title: 'Logout',
+                    message: 'Apakah Anda yakin ingin keluar?',
+                    onConfirm: () => AuthController.to.logout(),
+                  ),
+                  text: 'Keluar',
+                  // ...
+                ),
+                TextButton(
+                  onPressed: () {
+                    DialogService.confirmation(
+                      title: 'Hapus Akun',
+                      message: 'Apakah Anda yakin ingin menghapus akun?',
+                      onConfirm: () => AuthController.to.deleteAccount(),
+                    );
+                  },
+                  child: Text(
+                    'Hapus Akun',
+                    style: AppFonts.mdSemiBold.copyWith(color: AppStyle.danger),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Versi 1.0.1',
+                  style: AppFonts.smRegular.copyWith(color: Colors.grey),
                 ),
               ],
             ),

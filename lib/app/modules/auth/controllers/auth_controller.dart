@@ -143,6 +143,53 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> deleteAccount() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loginState.value = const ResultLoading();
+
+        // 1. Hapus data user di Firestore (sesuaikan nama collection-nya jika beda)
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .delete();
+
+        // 2. Disconnect akun Google (wajib untuk hapus akses aplikasi dari akun Google user)
+        if (await _googleSignIn.isSignedIn()) {
+          await _googleSignIn.disconnect();
+        }
+
+        // 3. Hapus user dari Firebase Authentication
+        await user.delete();
+
+        // 4. Kembalikan state dan arahkan ke home/login
+        loginState.value = const ResultInitial();
+        Get.offAllNamed('/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        // Error ini muncul kalau user udah login terlalu lama tapi mau hapus akun
+        loginState.value = const ResultFailed(
+          'Sesi kadaluarsa. Silakan login ulang.',
+        );
+        Get.snackbar(
+          'Keamanan',
+          'Silakan logout dan login kembali sebelum menghapus akun.',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        loginState.value = ResultFailed(e.message ?? 'Gagal menghapus akun');
+        Get.snackbar('Error', e.message ?? 'Gagal menghapus akun');
+      }
+    } catch (e) {
+      loginState.value = ResultFailed(e.toString());
+      Get.snackbar('Error', 'Terjadi kesalahan sistem');
+    }
+  }
+
   Future<void> logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
