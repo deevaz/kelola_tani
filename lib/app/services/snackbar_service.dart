@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 
 class SnackbarService {
@@ -9,7 +8,7 @@ class SnackbarService {
     Get.snackbar(
       title,
       message,
-      icon: Icon(Ionicons.checkmark_circle, color: AppStyle.white, size: 28.sp),
+      icon: Icon(Icons.check_circle, color: AppStyle.white, size: 28.sp),
       shouldIconPulse: false,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -33,7 +32,7 @@ class SnackbarService {
     Get.snackbar(
       title,
       message,
-      icon: Icon(Ionicons.close_circle, color: AppStyle.white, size: 28.sp),
+      icon: Icon(Icons.error_outline, color: AppStyle.white, size: 28.sp),
       shouldIconPulse: false,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -57,7 +56,7 @@ class SnackbarService {
     Get.snackbar(
       title,
       message,
-      icon: Icon(Ionicons.warning, color: AppStyle.white, size: 28.sp),
+      icon: Icon(Icons.warning, color: AppStyle.white, size: 28.sp),
       shouldIconPulse: false,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -81,11 +80,7 @@ class SnackbarService {
     Get.snackbar(
       title,
       message,
-      icon: Icon(
-        Ionicons.information_circle,
-        color: AppStyle.white,
-        size: 28.sp,
-      ),
+      icon: Icon(Icons.info_outline, color: AppStyle.white, size: 28.sp),
       shouldIconPulse: false,
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/dashboard/controllers/dashboard_controller.dart';
@@ -33,7 +32,7 @@ class DashboardView extends GetView<DashboardController> {
                     onTap: () {
                       Get.toNamed('/account');
                     },
-                    icon: Icon(Ionicons.person, color: AppStyle.white),
+                    icon: Icon(Icons.person, color: AppStyle.white),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -103,7 +102,7 @@ class DashboardView extends GetView<DashboardController> {
                           ...controller.devices.map(
                             (device) => _buildDeviceCard(
                               device.name,
-                              Ionicons.hardware_chip_outline,
+                              Icons.device_hub,
                               () => controller.goToDetail(device),
                               () => DialogService.confirmation(
                                 title: 'Hapus Perangkat',
@@ -169,7 +168,7 @@ class DashboardView extends GetView<DashboardController> {
       elevation: 0,
       borderColor: AppStyle.primary.withOpacity(0.3),
       child: Center(
-        child: Icon(Ionicons.add_circle, size: 40.sp, color: AppStyle.primary),
+        child: Icon(Icons.add_circle, size: 40.sp, color: AppStyle.primary),
       ),
     );
   }

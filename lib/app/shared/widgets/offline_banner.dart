@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/services/network_service.dart';
 
 class OfflineBanner extends StatelessWidget {
@@ -20,11 +19,7 @@ class OfflineBanner extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Ionicons.cloud_offline_outline,
-              color: Colors.red.shade700,
-              size: 16,
-            ),
+            Icon(Icons.wifi_off, color: Colors.red.shade700, size: 16),
             const SizedBox(width: 8),
             Text(
               'Mode Offline',

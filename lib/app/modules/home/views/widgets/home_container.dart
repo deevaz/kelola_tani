@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/auth/controllers/auth_controller.dart';
 import 'package:kelola_tani/app/modules/home/controllers/home_controller.dart';
@@ -54,7 +53,7 @@ class HomeContainer extends GetView<HomeController> {
                 Flexible(
                   child: AppButton.outlined(
                     borderRadius: 30.r,
-                    icon: Icon(Ionicons.logo_google, color: AppStyle.dark),
+                    icon: Icon(Icons.person_3_outlined, color: AppStyle.dark),
                     text: 'Masuk dengan Akun Google',
                     textColor: AppStyle.dark,
                     onTap: () => AuthController.to.signInWithGoogle(),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_button_style.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
@@ -24,11 +23,7 @@ class DialogService {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Ionicons.checkmark_circle,
-                color: AppStyle.success,
-                size: 60.sp,
-              ),
+              Icon(Icons.check_circle, color: AppStyle.success, size: 60.sp),
               SizedBox(height: 15.h),
               Text('success'.tr, style: AppFonts.lgBold),
               SizedBox(height: 8.h),
@@ -74,11 +69,7 @@ class DialogService {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Ionicons.information_circle,
-                color: AppStyle.primary,
-                size: 60.sp,
-              ),
+              Icon(Icons.info_outline, color: AppStyle.primary, size: 60.sp),
               SizedBox(height: 15.h),
               Text(title, style: AppFonts.lgBold, textAlign: TextAlign.center),
               SizedBox(height: 8.h),
@@ -123,7 +114,7 @@ class DialogService {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Ionicons.close_circle, color: AppStyle.danger, size: 60.sp),
+              Icon(Icons.error_outline, color: AppStyle.danger, size: 60.sp),
               SizedBox(height: 15.h),
               Text(title == '' ? 'error'.tr : title, style: AppFonts.lgBold),
               SizedBox(height: 8.h),
@@ -169,7 +160,7 @@ class DialogService {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Ionicons.help_circle, color: Colors.orange, size: 60.sp),
+              Icon(Icons.help_outline, color: Colors.orange, size: 60.sp),
               SizedBox(height: 15.h),
               Text(title, style: AppFonts.lgBold, textAlign: TextAlign.center),
               SizedBox(height: 8.h),
@@ -601,7 +592,7 @@ class DialogService {
                     child: Row(
                       children: [
                         Icon(
-                          Ionicons.calendar_outline,
+                          Icons.calendar_today,
                           size: 20.sp,
                           color: AppStyle.primary,
                         ),

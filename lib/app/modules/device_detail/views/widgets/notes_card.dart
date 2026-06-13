@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/services/dialog_service.dart';
@@ -41,13 +40,13 @@ class NotesCard extends StatelessWidget {
               extentRatio: 0.45,
               children: [
                 _buildCustomSlidableAction(
-                  icon: Ionicons.pencil_outline,
+                  icon: Icons.edit,
                   color: AppStyle.secondary,
                   label: 'Edit',
                   onTap: onEdit,
                 ),
                 _buildCustomSlidableAction(
-                  icon: Ionicons.trash_outline,
+                  icon: Icons.delete,
                   color: AppStyle.danger,
                   label: 'Hapus',
                   onTap: onDelete,

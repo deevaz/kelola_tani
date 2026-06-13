@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
@@ -41,7 +40,7 @@ class AppAddImage extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                Ionicons.camera_outline,
+                Icons.camera_alt,
                 size: 40.sp,
                 color:
                     // c.selectedImage.value != null
@@ -60,14 +59,14 @@ class AppAddImage extends StatelessWidget {
                   content: Column(
                     children: [
                       ListTile(
-                        leading: Icon(Ionicons.camera_outline),
+                        leading: Icon(Icons.camera_alt),
                         title: Text('camera'.tr),
                         onTap: () {
                           Get.back();
                         },
                       ),
                       ListTile(
-                        leading: Icon(Ionicons.image_outline),
+                        leading: Icon(Icons.image),
                         title: Text('gallery'.tr),
                         onTap: () {
                           Get.back();

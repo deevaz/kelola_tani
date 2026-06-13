@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
@@ -57,11 +56,7 @@ class AppImagePicker extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Ionicons.image_outline,
-                        size: 30.r,
-                        color: Colors.grey,
-                      ),
+                      Icon(Icons.image, size: 30.r, color: Colors.grey),
                       SizedBox(height: 4.h),
                       Text(
                         "Tambah",
@@ -114,7 +109,7 @@ class AppImagePicker extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildOption(
-                  icon: Ionicons.camera_outline,
+                  icon: Icons.camera_alt,
                   label: "Kamera",
                   onTap: () {
                     Get.back();
@@ -122,7 +117,7 @@ class AppImagePicker extends StatelessWidget {
                   },
                 ),
                 _buildOption(
-                  icon: Ionicons.images_outline,
+                  icon: Icons.image,
                   label: "Galeri",
                   onTap: () {
                     Get.back();

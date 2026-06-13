@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/core/utils/result_state.dart';
@@ -34,7 +33,7 @@ class ScanDeviceView extends StatelessWidget {
                       elevation: 0,
                       color: AppStyle.white.withOpacity(0.3),
                       onTap: () => Get.back(),
-                      icon: Icon(Ionicons.chevron_back, color: AppStyle.white),
+                      icon: Icon(Icons.chevron_left, color: AppStyle.white),
                     ),
                     SizedBox(width: 20.h),
                     Text(
@@ -83,7 +82,7 @@ class ScanDeviceView extends StatelessWidget {
                           () => controller.isScanned
                               ? Center(
                                   child: Icon(
-                                    Ionicons.checkmark_circle,
+                                    Icons.check_circle,
                                     color: AppStyle.primary,
                                     size: 80.sp,
                                   ),
@@ -130,7 +129,7 @@ class ScanDeviceView extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Icon(
-                                    Ionicons.checkmark_circle,
+                                    Icons.check_circle,
                                     color: AppStyle.primary,
                                   ),
                                   SizedBox(width: 8.w),
@@ -145,7 +144,7 @@ class ScanDeviceView extends StatelessWidget {
                                   GestureDetector(
                                     onTap: controller.resetScan,
                                     child: Icon(
-                                      Ionicons.refresh,
+                                      Icons.refresh,
                                       color: AppStyle.primary,
                                       size: 20.sp,
                                     ),

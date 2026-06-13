@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/dashboard_section.dart';
@@ -87,7 +86,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                           value: sensor != null
                               ? '${sensor.suhu.toStringAsFixed(1)} C'
                               : '-- C',
-                          icon: Ionicons.thermometer,
+                          icon: Icons.thermostat,
                           accentColor: AppStyle.danger,
                         ),
                         SizedBox(height: 10.h),
@@ -96,7 +95,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                           value: sensor != null
                               ? '${sensor.kelembapanTanah.toStringAsFixed(1)} %'
                               : '-- %',
-                          icon: Ionicons.water,
+                          icon: Icons.water,
                           accentColor: AppStyle.primary,
                         ),
                         SizedBox(height: 10.h),
@@ -105,7 +104,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                           value: sensor != null
                               ? '${sensor.kelembapanUdara.toStringAsFixed(1)} %'
                               : '-- %',
-                          icon: Ionicons.cloudy,
+                          icon: Icons.cloudy_snowing,
                           accentColor: AppStyle.secondary,
                         ),
                       ],
@@ -126,7 +125,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                               ? '${config.targetEC} mS/cm'
                               : '-- mS/cm',
                           footer: 'Fase: ${config?.growthPhase ?? '--'}',
-                          icon: Ionicons.leaf,
+                          icon: Icons.eco,
                           color: AppStyle.primary,
                         ),
                         SizedBox(height: 12.h),
@@ -138,7 +137,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                           data: 'Debit: ${config?.pumpDebitMLperS ?? 0} mL/S',
                           footer:
                               'Pompa: ${command?.action == 'on' ? 'Aktif' : 'Mati'}',
-                          icon: Ionicons.timer,
+                          icon: Icons.timer,
                           color: AppStyle.accent,
                         ),
                       ],
@@ -153,7 +152,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
             children: [
               MenuCard(
                 label: 'Kendali Pompa\n(Manual/AI)',
-                icon: Ionicons.settings,
+                icon: Icons.settings,
                 color: AppStyle.primary,
                 onTap: () {
                   DialogService.controlMode(
@@ -178,7 +177,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
               SizedBox(width: 12.w),
               MenuCard(
                 label: 'Catatan',
-                icon: Ionicons.document_text,
+                icon: Icons.note_alt_outlined,
                 color: AppStyle.secondary,
                 onTap: () => Get.toNamed(
                   '/notes',
@@ -191,7 +190,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
               SizedBox(width: 12.w),
               MenuCard(
                 label: 'Prediksi\nNutrisi (Detail)',
-                icon: Ionicons.analytics,
+                icon: Icons.analytics,
                 color: AppStyle.accent,
                 onTap: () => Get.toNamed(
                   '/ai',
@@ -260,7 +259,7 @@ void _showFilterBottomSheet(
           _buildFilterOption('7 Hari Terakhir', controller, isChart),
           const Divider(),
           ListTile(
-            leading: Icon(Ionicons.calendar_outline, color: AppStyle.primary),
+            leading: Icon(Icons.calendar_today, color: AppStyle.primary),
             title: Text('Pilih Manual di Kalender', style: AppFonts.mdSemiBold),
             onTap: () {
               Get.back();
@@ -282,7 +281,7 @@ Widget _buildFilterOption(
     title: Text(label, style: AppFonts.mdRegular),
     trailing: Obx(
       () => controller.chartFilter.value == label
-          ? Icon(Ionicons.checkmark_circle, color: AppStyle.primary)
+          ? Icon(Icons.check_circle, color: AppStyle.primary)
           : const SizedBox(),
     ),
     onTap: () {

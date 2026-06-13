@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
@@ -58,11 +57,11 @@ class AppDateTimePicker extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Ionicons.calendar_outline, size: 20, color: AppStyle.dark),
+                Icon(Icons.calendar_today, size: 20, color: AppStyle.dark),
                 SizedBox(width: 10.w),
                 Text(title, style: AppFonts.lgRegular),
                 const Spacer(),
-                Icon(Ionicons.time_outline, size: 20, color: AppStyle.dark),
+                Icon(Icons.access_time, size: 20, color: AppStyle.dark),
               ],
             ),
             Divider(thickness: 1, color: AppStyle.light),

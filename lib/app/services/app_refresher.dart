@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:ionicons/ionicons.dart';
 
 class AppRefresher extends StatefulWidget {
   final Widget child;
@@ -70,11 +69,7 @@ class _AppRefresherState extends State<AppRefresher> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Ionicons.folder_open_outline,
-            size: 80.sp,
-            color: Colors.grey.shade300,
-          ),
+          Icon(Icons.folder_open, size: 80.sp, color: Colors.grey.shade300),
           SizedBox(height: 16.h),
           Text(
             "Belum ada data",

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 
@@ -31,7 +30,7 @@ class AppEmptyState extends StatelessWidget {
     return AppEmptyState(
       title: title ?? 'Tidak ada data',
       subtitle: subtitle ?? 'Belum ada data yang bisa ditampilkan saat ini.',
-      icon: icon ?? Ionicons.folder_open_outline,
+      icon: icon ?? Icons.folder_open,
       iconColor: AppStyle.primary,
     );
   }
@@ -48,7 +47,7 @@ class AppEmptyState extends StatelessWidget {
     return AppEmptyState(
       title: title ?? 'Terjadi Kesalahan',
       subtitle: '${'Error'.tr}$detailError',
-      icon: Ionicons.alert_circle_outline,
+      icon: Icons.error_outline,
       iconColor: AppStyle.danger,
       buttonText: buttonText ?? 'try-again'.tr,
       onAction: onRetry,
