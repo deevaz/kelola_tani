@@ -120,10 +120,8 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                     return Column(
                       children: [
                         DetailCard(
-                          title: 'Target EC',
-                          value: config != null
-                              ? '${config.targetEC} mS/cm'
-                              : '-- mS/cm',
+                          title: 'Rekomendasi Pupuk',
+                          value: 'NPK 16-16-16',
                           footer: 'Fase: ${config?.growthPhase ?? '--'}',
                           icon: Icons.eco,
                           color: AppStyle.primary,
@@ -189,16 +187,19 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
               ),
               SizedBox(width: 12.w),
               MenuCard(
-                label: 'Prediksi\nNutrisi (Detail)',
+                label: 'Prediksi Nutrisi',
                 icon: Icons.analytics,
                 color: AppStyle.accent,
-                onTap: () => Get.toNamed(
-                  '/ai',
-                  arguments: {
-                    'deviceId': controller.deviceId,
-                    'deviceName': controller.device.value?.name ?? 'Perangkat',
-                  },
-                ),
+                onTap: () {
+                  Get.toNamed(
+                    '/ai',
+                    arguments: {
+                      'deviceId': controller.deviceId,
+                      'deviceName':
+                          controller.device.value?.name ?? 'Perangkat',
+                    },
+                  );
+                },
               ),
             ],
           ),

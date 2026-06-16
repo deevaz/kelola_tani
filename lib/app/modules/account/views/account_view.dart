@@ -68,7 +68,6 @@ class AccountView extends GetView<AccountController> {
                         controller.user?.displayName ?? 'User',
                         style: AppFonts.xlBold,
                       ),
-                      // Tambahan Email
                       Text(
                         controller.user?.email ?? 'Tidak ada email',
                         style: AppFonts.mdRegular.copyWith(color: Colors.grey),
@@ -79,8 +78,18 @@ class AccountView extends GetView<AccountController> {
                 AppMaterialRound(
                   child: ListTile(
                     leading: const Icon(Icons.build),
-                    title: Text('Perawatan Alat', style: AppFonts.lgSemiBold),
-                    onTap: () {},
+                    title: Text('Perbarui Alat', style: AppFonts.lgSemiBold),
+                    onTap: () {
+                      DialogService.checkUpdate(
+                        onCheck: () async {
+                          await Future.delayed(const Duration(seconds: 2));
+                          return false;
+                        },
+                        onUpdate: () {
+                          // nanti diisi logika OTA ESP
+                        },
+                      );
+                    },
                   ),
                 ),
                 AppMaterialRound(
@@ -95,7 +104,7 @@ class AccountView extends GetView<AccountController> {
                     },
                   ),
                 ),
-                SizedBox(height: 15.h),
+                SizedBox(height: 5.h),
                 AppButton(
                   onTap: () => DialogService.confirmation(
                     title: 'Logout',
@@ -103,9 +112,9 @@ class AccountView extends GetView<AccountController> {
                     onConfirm: () => AuthController.to.logout(),
                   ),
                   text: 'Keluar',
-                  // ...
                 ),
                 TextButton(
+                  style: TextButton.styleFrom(foregroundColor: AppStyle.danger),
                   onPressed: () {
                     DialogService.confirmation(
                       title: 'Hapus Akun',

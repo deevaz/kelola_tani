@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:date_range_filter/date_range_filter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
@@ -17,7 +18,8 @@ class DeviceDetailController extends GetxController {
 
   String deviceId = Get.arguments?['deviceId'] ?? 'KTANI-A1B2C3D4E5F6';
 
-  final String uid = '02QnFCV4Woh7VAqar9oMY0us4W03';
+  // final String uid = '02QnFCV4Woh7VAqar9oMY0us4W03';
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   final device = Rxn<DeviceModel>();
   final config = Rxn<DeviceConfigModel>();
@@ -146,6 +148,19 @@ class DeviceDetailController extends GetxController {
         .listen((logs) => chartLogs.assignAll(logs));
   }
 
+  // void _fetchTableLogs() {
+  //   if (tableDateRange.value == null) return;
+  //   _tableSub?.cancel();
+  //   _tableSub = _firestore
+  //       .streamSensorLogsByRange(
+  //         uid,
+  //         deviceId,
+  //         tableDateRange.value!.start,
+  //         tableDateRange.value!.end,
+  //       )
+  //       .listen((logs) => tableLogs.assignAll(logs));
+  // }
+
   void _fetchTableLogs() {
     if (tableDateRange.value == null) return;
     _tableSub?.cancel();
@@ -156,7 +171,13 @@ class DeviceDetailController extends GetxController {
           tableDateRange.value!.start,
           tableDateRange.value!.end,
         )
-        .listen((logs) => tableLogs.assignAll(logs));
+        .listen((logs) {
+          print('>>> Table logs count: ${logs.length}'); // ← tambah ini
+          print(
+            '>>> Range: ${tableDateRange.value!.start} - ${tableDateRange.value!.end}',
+          );
+          tableLogs.assignAll(logs);
+        });
   }
 
   String getFormattedDate({required bool isChart}) {

@@ -20,11 +20,22 @@ class DashboardController extends GetxController {
   }
 
   void listenDevices() {
+    print('>>> UID: $uid');
     _firestoreService.streamDevices(uid).listen((data) {
+      print('>>> Devices: ${data.length}');
+      for (var d in data) {
+        print('>>> Device name: ${d.name}, id: ${d.deviceId}');
+      }
       devices.value = data;
       isLoading.value = false;
     });
   }
+  // void listenDevices() {
+  //   _firestoreService.streamDevices(uid).listen((data) {
+  //     devices.value = data;
+  //     isLoading.value = false;
+  //   });
+  // }
 
   void deleteDevice(DeviceModel device) async {
     await _firestoreService.deleteDevice(uid, device.deviceId);

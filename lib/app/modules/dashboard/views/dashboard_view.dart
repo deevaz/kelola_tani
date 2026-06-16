@@ -92,7 +92,6 @@ class DashboardView extends GetView<DashboardController> {
                       if (controller.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
                       }
-
                       return GridView.count(
                         crossAxisCount: 3,
                         crossAxisSpacing: 16.w,

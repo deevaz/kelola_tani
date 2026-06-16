@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/device_detail/controllers/ai_controller.dart';
+import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_header.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
@@ -11,14 +12,16 @@ import 'package:kelola_tani/app/shared/widgets/app_text_field.dart';
 
 class AiView extends GetView<AiController> {
   const AiView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppStyle.light,
       body: Column(
         children: [
           AppHeader(
             leading: Text(
-              'Rekomendasi Nutrisi',
+              'Prediksi Nutrisi',
               style: AppFonts.xlSemiBold.copyWith(color: AppStyle.white),
             ),
             trailing: Container(
@@ -40,83 +43,131 @@ class AiView extends GetView<AiController> {
               ),
             ),
           ),
-          Expanded(child: _buildDashboardGrid()),
-        ],
-      ),
-    );
-  }
-}
-
-Widget _buildDashboardGrid() {
-  final controller = Get.put(AiController());
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 15.h,
-      children: [
-        Text('Masukkan Umur Tanaman ', style: AppFonts.mdSemiBold),
-        AppTextField(
-          title: 'Contoh: 46 (dalam hari)',
-          hintText: 'Masukkan umur tanaman dalam hari',
-        ),
-        AppButton(
-          onTap: () => controller.toggleRecommendations(),
-          text: 'Hitung Rekomendasi',
-        ),
-        Obx(
-          () => Visibility(
-            visible: controller.showRecommendations.value,
-            child: AppMaterialRound(
-              paddingValue: 16.r,
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rekomendasi Nutrisi (AI-Adaptive)',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
-                    ),
+                    'Masukkan umur tanaman anda :',
+                    style: AppFonts.mdSemiBold,
                   ),
-                  SizedBox(height: 8.h),
-                  Text('Target EC: 1.4 mS/cm (Suhu Panas: 31°C)'),
-                  const Divider(),
-
-                  Text(
-                    'Analisis Kondisi:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
-                    ),
+                  SizedBox(height: 10.h),
+                  AppTextField(
+                    title: 'Contoh: 30',
+                    hintText: 'Masukkan umur tanaman dalam hari (HST)',
+                    inputType: TextInputType.number,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    'Suhu terdeteksi tinggi (31°C), memicu laju transpirasi tanaman yang cepat. '
-                    'Sistem menurunkan Target EC guna mencegah akumulasi garam (Nutrient Burn) '
-                    'karena tanaman menyerap lebih banyak air untuk pendinginan suhu.',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.black87),
+                  SizedBox(height: 16.h),
+                  AppButton(
+                    onTap: () {
+                      DialogService.showInfo(
+                        title: 'Fitur Segera Hadir',
+                        message:
+                            'Fitur prediksi nutrisi berbasis AI akan segera hadir. Nantikan update selanjutnya!',
+                      );
+                      // controller.toggleRecommendations();
+                    },
+                    text: 'Hitung',
+                    width: double.infinity,
                   ),
-
-                  SizedBox(height: 12.h),
-                  Text(
-                    'Takaran per 100L Air:',
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                  Text(
-                    'Stok A: 350 ml | Stok B: 350 ml',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
-                      color: Colors.green[700],
+                  SizedBox(height: 20.h),
+                  Obx(
+                    () => Visibility(
+                      visible: controller.showRecommendations.value,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppMaterialRound(
+                            paddingValue: 16.r,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Berikut adalah rata rata kandungan N, P dan K lahan anda :',
+                                  style: AppFonts.mdSemiBold,
+                                ),
+                                SizedBox(height: 12.h),
+                                _npkRow('Nitrogen', '(N)', '100 mg/kg'),
+                                SizedBox(height: 8.h),
+                                _npkRow('Phospor', '(P)', '100 mg/kg'),
+                                SizedBox(height: 8.h),
+                                _npkRow('Kalium', '(K)', '100 mg/kg'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                          AppMaterialRound(
+                            paddingValue: 16.r,
+                            child: RichText(
+                              text: TextSpan(
+                                style: AppFonts.smRegular.copyWith(
+                                  color: Colors.black87,
+                                  height: 1.6,
+                                ),
+                                children: [
+                                  const TextSpan(
+                                    text:
+                                        'Saat ini tanaman anda berada di fase \'',
+                                  ),
+                                  TextSpan(
+                                    text: 'Vegetatif',
+                                    style: AppFonts.smBold,
+                                  ),
+                                  const TextSpan(
+                                    text: '\' dengan kadar unsur hara ',
+                                  ),
+                                  TextSpan(
+                                    text: '"rendah"',
+                                    style: AppFonts.smBold,
+                                  ),
+                                  const TextSpan(
+                                    text: ' dengan hasil prediksi ai sebesar ',
+                                  ),
+                                  TextSpan(
+                                    text: '"44.88"',
+                                    style: AppFonts.smBold,
+                                  ),
+                                  const TextSpan(
+                                    text:
+                                        '. anda dianjurkan menambahkan pupuk ',
+                                  ),
+                                  TextSpan(
+                                    text: '"NPK 16-16-16"',
+                                    style: AppFonts.smBold,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _npkRow(String label, String symbol, String value) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 80.w,
+          child: Text(label, style: AppFonts.smRegular),
         ),
+        SizedBox(
+          width: 40.w,
+          child: Text(symbol, style: AppFonts.smRegular),
+        ),
+        const Spacer(),
+        Text(value, style: AppFonts.smSemiBold),
       ],
-    ),
-  );
+    );
+  }
 }

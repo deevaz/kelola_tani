@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:kelola_tani/app/data/models/note_model.dart';
 import 'package:kelola_tani/app/services/firestore_service.dart';
@@ -17,7 +18,7 @@ class NotesController extends GetxController {
   final int _limit = 10;
 
   String deviceId = Get.arguments?['deviceId'] ?? 'KTANI-A1B2C3D4E5F6';
-  final String uid = '02QnFCV4Woh7VAqar9oMY0us4W03';
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   String deviceName = Get.arguments?['deviceName'] ?? 'Perangkat';
 

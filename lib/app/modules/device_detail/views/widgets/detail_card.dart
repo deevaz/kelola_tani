@@ -27,28 +27,30 @@ class DetailCard extends StatelessWidget {
     return Expanded(
       child: AppMaterialRound(
         color: AppStyle.white,
-        paddingValue: 8.r,
+        paddingValue: 10.r,
         radius: 15.r,
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(title, style: AppFonts.smRegular),
-                Text(value, style: AppFonts.xxlBold),
-                Text(footer, style: AppFonts.xsMedium),
+                Icon(icon, color: color, size: 23.sp),
               ],
             ),
-            const Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Icon(icon, color: color, size: data != null ? 45.sp : 50.sp),
-                const Spacer(),
-                if (data != null) Text(data!, style: AppFonts.xsRegular),
-              ],
-            ),
+            Text(value, style: AppFonts.lgBold),
+            if (data != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(footer, style: AppFonts.xsMedium),
+                  Text(data!, style: AppFonts.xsRegular),
+                ],
+              )
+            else
+              Text(footer, style: AppFonts.xsMedium),
           ],
         ),
       ),

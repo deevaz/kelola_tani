@@ -9,50 +9,50 @@ import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
 
 class DialogService {
-  static void success({
-    required String message,
-    required VoidCallback onConfirm,
-  }) {
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: AppMaterialRound(
-          paddingValue: 20.r,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.check_circle, color: AppStyle.success, size: 60.sp),
-              SizedBox(height: 15.h),
-              Text('success'.tr, style: AppFonts.lgBold),
-              SizedBox(height: 8.h),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: AppFonts.smRegular.copyWith(color: Colors.grey.shade700),
-              ),
-              SizedBox(height: 20.h),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyle.success,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  onPressed: onConfirm,
-                  child: Text('OK', style: TextStyle(color: AppStyle.white)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
+  // static void success({
+  //   required String message,
+  //   required VoidCallback onConfirm,
+  // }) {
+  //   Get.dialog(
+  //     Dialog(
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20.r),
+  //       ),
+  //       child: AppMaterialRound(
+  //         paddingValue: 20.r,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Icon(Icons.check_circle, color: AppStyle.success, size: 60.sp),
+  //             SizedBox(height: 15.h),
+  //             Text('success'.tr, style: AppFonts.lgBold),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               message,
+  //               textAlign: TextAlign.center,
+  //               style: AppFonts.smRegular.copyWith(color: Colors.grey.shade700),
+  //             ),
+  //             SizedBox(height: 20.h),
+  //             SizedBox(
+  //               width: double.infinity,
+  //               child: ElevatedButton(
+  //                 style: ElevatedButton.styleFrom(
+  //                   backgroundColor: AppStyle.success,
+  //                   shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(10.r),
+  //                   ),
+  //                 ),
+  //                 onPressed: onConfirm,
+  //                 child: Text('OK', style: TextStyle(color: AppStyle.white)),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //     barrierDismissible: false,
+  //   );
+  // }
 
   static void showInfo({
     required String title,
@@ -99,50 +99,50 @@ class DialogService {
     );
   }
 
-  static void error({
-    required String title,
-    required String message,
-    VoidCallback? onConfirm,
-  }) {
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: AppMaterialRound(
-          paddingValue: 20.r,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.error_outline, color: AppStyle.danger, size: 60.sp),
-              SizedBox(height: 15.h),
-              Text(title == '' ? 'error'.tr : title, style: AppFonts.lgBold),
-              SizedBox(height: 8.h),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: AppFonts.smRegular.copyWith(color: Colors.grey.shade700),
-              ),
-              SizedBox(height: 20.h),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppStyle.danger,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
-                  onPressed: onConfirm ?? () => Get.back(),
-                  child: Text('OK', style: TextStyle(color: AppStyle.white)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // static void error({
+  //   required String title,
+  //   required String message,
+  //   VoidCallback? onConfirm,
+  // }) {
+  //   Get.dialog(
+  //     Dialog(
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20.r),
+  //       ),
+  //       child: AppMaterialRound(
+  //         paddingValue: 20.r,
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Icon(Icons.error_outline, color: AppStyle.danger, size: 60.sp),
+  //             SizedBox(height: 15.h),
+  //             Text(title == '' ? 'error'.tr : title, style: AppFonts.lgBold),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               message,
+  //               textAlign: TextAlign.center,
+  //               style: AppFonts.smRegular.copyWith(color: Colors.grey.shade700),
+  //             ),
+  //             SizedBox(height: 20.h),
+  //             SizedBox(
+  //               width: double.infinity,
+  //               child: ElevatedButton(
+  //                 style: ElevatedButton.styleFrom(
+  //                   backgroundColor: AppStyle.danger,
+  //                   shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(10.r),
+  //                   ),
+  //                 ),
+  //                 onPressed: onConfirm ?? () => Get.back(),
+  //                 child: Text('OK', style: TextStyle(color: AppStyle.white)),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   static void confirmation({
     required String title,
@@ -653,5 +653,144 @@ class DialogService {
         ),
       ),
     );
+  }
+
+  static Future<void> checkUpdate({
+    required Future<bool> Function() onCheck,
+    required VoidCallback onUpdate,
+  }) async {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: AppMaterialRound(
+          paddingValue: 24.r,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(color: AppStyle.primary),
+              SizedBox(height: 16.h),
+              Text('Memeriksa pembaruan...', style: AppFonts.mdMedium),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    final bool hasUpdate = await onCheck();
+
+    Get.back();
+
+    if (hasUpdate) {
+      Get.dialog(
+        Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: AppMaterialRound(
+            paddingValue: 20.r,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.system_update, color: AppStyle.primary, size: 60.sp),
+                SizedBox(height: 15.h),
+                Text('Pembaruan Tersedia', style: AppFonts.lgBold),
+                SizedBox(height: 8.h),
+                Text(
+                  'Versi terbaru tersedia. Perbarui sekarang?',
+                  textAlign: TextAlign.center,
+                  style: AppFonts.smRegular.copyWith(
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: AppStyle.grey),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        onPressed: () => Get.back(),
+                        child: Text(
+                          'Nanti',
+                          style: TextStyle(color: Colors.grey.shade700),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppStyle.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.back();
+                          onUpdate();
+                        },
+                        child: Text(
+                          'Perbarui',
+                          style: TextStyle(color: AppStyle.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        barrierDismissible: false,
+      );
+    } else {
+      Get.dialog(
+        Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: AppMaterialRound(
+            paddingValue: 20.r,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.check_circle, color: AppStyle.success, size: 60.sp),
+                SizedBox(height: 15.h),
+                Text('Firmware Terkini', style: AppFonts.lgBold),
+                SizedBox(height: 8.h),
+                Text(
+                  'Kamu sudah menggunakan versi terbaru.',
+                  textAlign: TextAlign.center,
+                  style: AppFonts.smRegular.copyWith(
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppStyle.success,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
+                    onPressed: () => Get.back(),
+                    child: Text('OK', style: TextStyle(color: AppStyle.white)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

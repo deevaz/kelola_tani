@@ -48,8 +48,9 @@ class HomeContainer extends GetView<HomeController> {
                     color: AppStyle.grey,
                     fontWeight: FontWeight.w400,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 45.h),
+                SizedBox(height: 25.h),
                 Flexible(
                   child: AppButton.outlined(
                     borderRadius: 30.r,

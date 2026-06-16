@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 
@@ -85,7 +84,6 @@ class PrivacyPolicyView extends StatelessWidget {
     );
   }
 
-  // Widget helper biar kode gak berantakan
   Widget _buildSection({required String title, required String content}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20.h),
