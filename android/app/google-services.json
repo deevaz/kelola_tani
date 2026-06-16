@@ -15,6 +15,38 @@
       },
       "oauth_client": [
         {
+          "client_id": "711528601248-7bmai89d2mad5kjudqd1re317499rqog.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deevaz.kelolatani",
+            "certificate_hash": "e130d22dc43fca2ebe0a52e407d606eec039a28c"
+          }
+        },
+        {
+          "client_id": "711528601248-8bru0lmig5759fj3m7cq6c6lpb5cb4hq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deevaz.kelolatani",
+            "certificate_hash": "55c6f71c1125a3c6f7352d3699830557b2daa817"
+          }
+        },
+        {
+          "client_id": "711528601248-se16vcg9jc47pkcbneno6gi5jr4824t9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deevaz.kelolatani",
+            "certificate_hash": "e24936b92c1a747a561b7652bd3ad54f5b807e02"
+          }
+        },
+        {
+          "client_id": "711528601248-vcbj3rtni9rspvnsg11fm2ipdo8bt6hp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deevaz.kelolatani",
+            "certificate_hash": "76af772a5b0d27a71222cc7b9b1c0c3398bb352e"
+          }
+        },
+        {
           "client_id": "711528601248-eff1q7e4i1l25rdut8qr53au38uavt63.apps.googleusercontent.com",
           "client_type": 3
         }
