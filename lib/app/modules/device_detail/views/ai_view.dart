@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_fonts.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
 import 'package:kelola_tani/app/modules/device_detail/controllers/ai_controller.dart';
-import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_button.dart';
 import 'package:kelola_tani/app/shared/widgets/app_header.dart';
 import 'package:kelola_tani/app/shared/widgets/app_material_round.dart';
@@ -34,7 +33,6 @@ class AiView extends GetView<AiController> {
                   width: 1,
                 ),
               ),
-
               child: Center(
                 child: Text(
                   'Perangkat: ${controller.deviceName}',
@@ -55,22 +53,22 @@ class AiView extends GetView<AiController> {
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
+                    controller: controller.plantAgeController,
                     title: 'Contoh: 30',
                     hintText: 'Masukkan umur tanaman dalam hari (HST)',
                     inputType: TextInputType.number,
                   ),
                   SizedBox(height: 16.h),
-                  AppButton(
-                    onTap: () {
-                      DialogService.showInfo(
-                        title: 'Fitur Segera Hadir',
-                        message:
-                            'Fitur prediksi nutrisi berbasis AI akan segera hadir. Nantikan update selanjutnya!',
-                      );
-                      // controller.toggleRecommendations();
-                    },
-                    text: 'Hitung',
-                    width: double.infinity,
+                  Obx(
+                    () => AppButton(
+                      onTap: controller.isLoading.value
+                          ? null
+                          : () => controller.predict(),
+                      text: controller.isLoading.value
+                          ? 'Memproses...'
+                          : 'Hitung',
+                      width: double.infinity,
+                    ),
                   ),
                   SizedBox(height: 20.h),
                   Obx(
@@ -89,58 +87,84 @@ class AiView extends GetView<AiController> {
                                   style: AppFonts.mdSemiBold,
                                 ),
                                 SizedBox(height: 12.h),
-                                _npkRow('Nitrogen', '(N)', '100 mg/kg'),
+                                _npkRow(
+                                  'Nitrogen',
+                                  '(N)',
+                                  '${controller.latestSensor.value?.nitrogen ?? 0} mg/kg',
+                                ),
                                 SizedBox(height: 8.h),
-                                _npkRow('Phospor', '(P)', '100 mg/kg'),
+                                _npkRow(
+                                  'Phospor',
+                                  '(P)',
+                                  '${controller.latestSensor.value?.phosphor ?? 0} mg/kg',
+                                ),
                                 SizedBox(height: 8.h),
-                                _npkRow('Kalium', '(K)', '100 mg/kg'),
+                                _npkRow(
+                                  'Kalium',
+                                  '(K)',
+                                  '${controller.latestSensor.value?.kalium ?? 0} mg/kg',
+                                ),
                               ],
                             ),
                           ),
                           SizedBox(height: 16.h),
-                          AppMaterialRound(
-                            paddingValue: 16.r,
-                            child: RichText(
-                              text: TextSpan(
-                                style: AppFonts.smRegular.copyWith(
-                                  color: Colors.black87,
-                                  height: 1.6,
+                          Obx(() {
+                            final isNoNeed =
+                                controller.recommendationCode.value == 0;
+                            return AppMaterialRound(
+                              paddingValue: 16.r,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: AppFonts.smRegular.copyWith(
+                                    color: Colors.black87,
+                                    height: 1.6,
+                                  ),
+                                  children: [
+                                    const TextSpan(
+                                      text:
+                                          'Saat ini tanaman anda berada di fase \'',
+                                    ),
+                                    TextSpan(
+                                      text: controller.fase.value,
+                                      style: AppFonts.smBold,
+                                    ),
+                                    const TextSpan(
+                                      text:
+                                          '\' dengan tingkat kepercayaan prediksi sebesar ',
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '"${(controller.confidence.value * 100).toStringAsFixed(1)}%"',
+                                      style: AppFonts.smBold,
+                                    ),
+                                    if (isNoNeed) ...[
+                                      const TextSpan(
+                                        text:
+                                            '. Kandungan unsur hara lahan anda sudah mencukupi, ',
+                                      ),
+                                      const TextSpan(text: 'sehingga '),
+                                      TextSpan(
+                                        text: 'tidak perlu penambahan pupuk',
+                                        style: AppFonts.smBold,
+                                      ),
+                                      const TextSpan(text: ' untuk saat ini.'),
+                                    ] else ...[
+                                      const TextSpan(
+                                        text:
+                                            '. Anda dianjurkan menambahkan pupuk ',
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '"${controller.recommendation.value}"',
+                                        style: AppFonts.smBold,
+                                      ),
+                                      const TextSpan(text: '.'),
+                                    ],
+                                  ],
                                 ),
-                                children: [
-                                  const TextSpan(
-                                    text:
-                                        'Saat ini tanaman anda berada di fase \'',
-                                  ),
-                                  TextSpan(
-                                    text: 'Vegetatif',
-                                    style: AppFonts.smBold,
-                                  ),
-                                  const TextSpan(
-                                    text: '\' dengan kadar unsur hara ',
-                                  ),
-                                  TextSpan(
-                                    text: '"rendah"',
-                                    style: AppFonts.smBold,
-                                  ),
-                                  const TextSpan(
-                                    text: ' dengan hasil prediksi ai sebesar ',
-                                  ),
-                                  TextSpan(
-                                    text: '"44.88"',
-                                    style: AppFonts.smBold,
-                                  ),
-                                  const TextSpan(
-                                    text:
-                                        '. anda dianjurkan menambahkan pupuk ',
-                                  ),
-                                  TextSpan(
-                                    text: '"NPK 16-16-16"',
-                                    style: AppFonts.smBold,
-                                  ),
-                                ],
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                         ],
                       ),
                     ),

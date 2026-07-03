@@ -35,7 +35,7 @@ class AppMaterialRound extends StatelessWidget {
       child: Material(
         color: color ?? AppStyle.white,
         borderRadius: BorderRadius.circular(radius ?? 15.r),
-        elevation: elevation ?? 2.5,
+        elevation: elevation ?? 0.3,
         child: Container(
           width: width,
           height: height,

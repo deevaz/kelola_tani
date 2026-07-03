@@ -65,6 +65,16 @@ class _NutrisiChartState extends State<NutrisiChart> {
       double minWidth = MediaQuery.of(context).size.width - 50.w;
       double chartWidth = math.max(calculatedWidth, minWidth);
 
+      double maxVal = 0;
+      for (var log in logs) {
+        if (log.nitrogen > maxVal) maxVal = log.nitrogen;
+        if (log.phosphor > maxVal) maxVal = log.phosphor;
+        if (log.kalium > maxVal) maxVal = log.kalium;
+      }
+      double maxY = ((maxVal / 50).ceil() * 50).toDouble();
+      if (maxY < 50) maxY = 50;
+      double interval = (maxY / 5).ceilToDouble();
+
       return Container(
         height: 290.h,
         padding: EdgeInsets.only(left: 8.w, top: 16.h, bottom: 8.h),
@@ -85,7 +95,6 @@ class _NutrisiChartState extends State<NutrisiChart> {
                 _buildLegendItem('Kalium (K)', Colors.blue),
               ],
             ),
-
             Expanded(
               child: SingleChildScrollView(
                 controller: _scrollController,
@@ -98,10 +107,67 @@ class _NutrisiChartState extends State<NutrisiChart> {
                     LineChartData(
                       maxX: (logs.length - 1).toDouble(),
                       minY: 0,
-                      maxY: 250,
+                      maxY: maxY,
+                      lineTouchData: LineTouchData(
+                        enabled: true,
+                        getTouchedSpotIndicator: (barData, spotIndexes) {
+                          return spotIndexes.map((index) {
+                            return TouchedSpotIndicatorData(
+                              FlLine(
+                                color: Colors.grey.shade400,
+                                strokeWidth: 1,
+                                dashArray: [4, 4],
+                              ),
+                              FlDotData(
+                                show: true,
+                                getDotPainter: (spot, percent, bar, idx) =>
+                                    FlDotCirclePainter(
+                                      radius: 5,
+                                      color: bar.color ?? Colors.blue,
+                                      strokeWidth: 2,
+                                      strokeColor: Colors.white,
+                                    ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                        handleBuiltInTouches: true,
+                        touchTooltipData: LineTouchTooltipData(
+                          getTooltipColor: (spot) => Colors.white,
+                          tooltipBorder: BorderSide(
+                            color: Colors.grey.shade300,
+                          ),
+                          // tooltipRoundedRadius: 8,
+                          tooltipPadding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 6.h,
+                          ),
+                          getTooltipItems: (touchedSpots) {
+                            return touchedSpots.map((spot) {
+                              String label;
+                              if (spot.barIndex == 0) {
+                                label = 'N';
+                              } else if (spot.barIndex == 1) {
+                                label = 'P';
+                              } else {
+                                label = 'K';
+                              }
+                              return LineTooltipItem(
+                                '$label: ${spot.y.toInt()} mg/kg',
+                                TextStyle(
+                                  color: spot.bar.color ?? Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11.sp,
+                                ),
+                              );
+                            }).toList();
+                          },
+                        ),
+                      ),
                       gridData: FlGridData(
                         show: true,
                         drawVerticalLine: true,
+                        horizontalInterval: interval,
                         getDrawingHorizontalLine: (value) =>
                             FlLine(color: Colors.grey.shade300, strokeWidth: 1),
                         getDrawingVerticalLine: (value) =>
@@ -135,8 +201,8 @@ class _NutrisiChartState extends State<NutrisiChart> {
                         leftTitles: AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: true,
-                            interval: 50,
-                            reservedSize: 30,
+                            interval: interval,
+                            reservedSize: 36,
                             getTitlesWidget: (value, meta) {
                               return Text(
                                 value.toInt().toString(),

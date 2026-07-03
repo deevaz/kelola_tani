@@ -24,7 +24,6 @@ class SensorTile extends StatelessWidget {
       color: AppStyle.white,
       paddingValue: 5.r,
       radius: 15.r,
-      elevation: 2,
       child: Row(
         children: [
           Container(

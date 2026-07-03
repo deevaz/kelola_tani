@@ -206,6 +206,35 @@ class FirestoreService {
     ).set(config.toMap(), SetOptions(merge: true));
   }
 
+  Future<List<SensorLogModel>> fetchSensorLogsByRange(
+    String uid,
+    String deviceId,
+    DateTime start,
+    DateTime end,
+  ) async {
+    final snapshot = await _sensorLogRef(uid, deviceId)
+        .where('recordedAt', isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where('recordedAt', isLessThanOrEqualTo: Timestamp.fromDate(end))
+        .orderBy('recordedAt') // urut naik biar CSV rapi
+        .get();
+
+    return snapshot.docs
+        .map((doc) => SensorLogModel.fromFirestore(doc))
+        .toList();
+  }
+
+  Future<void> saveRecommendation(
+    String uid,
+    String deviceId,
+    String recommendation,
+    DateTime predictedAt,
+  ) async {
+    await _configRef(uid, deviceId).set({
+      'fertilizerRecommendation': recommendation,
+      'lastRecommendedAt': Timestamp.fromDate(predictedAt),
+    }, SetOptions(merge: true));
+  }
+
   Future<void> updateOperatingMode(
     String uid,
     String deviceId,
@@ -308,9 +337,11 @@ class FirestoreService {
   }
 
   Stream<DeviceModel?> streamSingleDevice(String uid, String deviceId) {
-    return _deviceRef(uid).doc(deviceId).snapshots().map((doc) {
-      if (!doc.exists) return null;
-      return DeviceModel.fromFirestore(doc);
+    return _deviceRef(uid).doc(deviceId).snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        return DeviceModel.fromFirestore(snapshot);
+      }
+      return null;
     });
   }
 }

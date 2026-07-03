@@ -9,7 +9,6 @@ import 'package:kelola_tani/app/modules/device_detail/views/widgets/history_tabl
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/menu_card.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/nutrisi_chart.dart';
 import 'package:kelola_tani/app/modules/device_detail/views/widgets/sensor_tile.dart';
-import 'package:kelola_tani/app/services/app_refresher.dart';
 import 'package:kelola_tani/app/services/dialog_service.dart';
 import 'package:kelola_tani/app/shared/widgets/app_header.dart';
 
@@ -21,46 +20,54 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Obx(() {
+        final isOnline = controller.isDeviceOnline.value;
+        return FloatingActionButton(
+          onPressed: () =>
+              print('Device is ${isOnline ? 'online' : 'offline'}'),
+          backgroundColor: isOnline
+              ? AppStyle.primary
+              : AppStyle.primary.withOpacity(0.5),
+          child: Icon(Icons.settings_remote, color: AppStyle.white),
+        );
+      }),
       backgroundColor: AppStyle.light,
-      body: AppRefresher(
-        onRefresh: () => controller.onRefresh(),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Obx(() {
-                final onlineStatus = controller.isDeviceOnline.value;
-                return AppHeader(
-                  leading: Row(
-                    children: [
-                      Text(
-                        controller.device.value?.name ?? 'Memuat...',
-                        style: AppFonts.xlSemiBold.copyWith(
-                          color: AppStyle.white,
-                        ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Obx(() {
+              final onlineStatus = controller.isDeviceOnline.value;
+              return AppHeader(
+                leading: Row(
+                  children: [
+                    Text(
+                      controller.device.value?.name ?? 'Memuat...',
+                      style: AppFonts.xlSemiBold.copyWith(
+                        color: AppStyle.white,
                       ),
-                      SizedBox(width: 5.w),
-                      Icon(
-                        Icons.circle,
-                        color: onlineStatus
-                            ? AppStyle.secondary
-                            : AppStyle.danger,
-                        size: 12.sp,
-                      ),
-                    ],
-                  ),
-                  trailing: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Image.asset(
-                      'assets/icons/app_icon.png',
-                      height: 40.w,
-                      width: 40.w,
                     ),
+                    SizedBox(width: 5.w),
+                    Icon(
+                      Icons.circle,
+                      color: onlineStatus
+                          ? AppStyle.secondary
+                          : AppStyle.danger,
+                      size: 12.sp,
+                    ),
+                  ],
+                ),
+                trailing: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.asset(
+                    'assets/icons/app_icon.png',
+                    height: 40.w,
+                    width: 40.w,
                   ),
-                );
-              }),
-              _buildDashboardGrid(controller),
-            ],
-          ),
+                ),
+              );
+            }),
+            _buildDashboardGrid(controller),
+          ],
         ),
       ),
     );
@@ -119,13 +126,19 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                     final command = controller.command.value;
                     return Column(
                       children: [
-                        DetailCard(
-                          title: 'Rekomendasi Pupuk',
-                          value: 'NPK 16-16-16',
-                          footer: 'Fase: ${config?.growthPhase ?? '--'}',
-                          icon: Icons.eco,
-                          color: AppStyle.primary,
+                        Obx(
+                          () => DetailCard(
+                            title: 'Rekomendasi Pupuk',
+                            value:
+                                controller.lastRecommendation.value.isNotEmpty
+                                ? controller.lastRecommendation.value
+                                : 'Belum ada',
+                            footer: 'Fase: ${config?.growthPhase ?? '--'}',
+                            icon: Icons.eco,
+                            color: AppStyle.primary,
+                          ),
                         ),
+
                         SizedBox(height: 12.h),
                         DetailCard(
                           title: 'Durasi Pompa',
@@ -199,6 +212,7 @@ class DeviceDetailView extends GetView<DeviceDetailController> {
                           controller.device.value?.name ?? 'Perangkat',
                     },
                   );
+                  controller.loadLastRecommendation();
                 },
               ),
             ],
@@ -265,6 +279,30 @@ void _showFilterBottomSheet(
             onTap: () {
               Get.back();
               controller.pickDateRange(isChart: isChart);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(Icons.download, color: AppStyle.primary),
+            title: Text('Export CSV', style: AppFonts.mdSemiBold),
+            onTap: () async {
+              Get.back();
+              final range = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(2025),
+                lastDate: DateTime.now(),
+              );
+              if (range != null) {
+                final end = DateTime(
+                  range.end.year,
+                  range.end.month,
+                  range.end.day,
+                  23,
+                  59,
+                  59,
+                );
+                controller.exportCsv(range.start, end);
+              }
             },
           ),
         ],

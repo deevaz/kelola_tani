@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kelola_tani/app/core/theme/app_style.dart';
+import 'package:kelola_tani/app/core/utils/csv_builder.dart';
 import 'package:kelola_tani/app/data/models/device_config_model.dart';
 import 'package:kelola_tani/app/data/models/device_model.dart';
 import 'package:kelola_tani/app/data/models/pump_command_model.dart';
@@ -12,11 +13,14 @@ import 'package:kelola_tani/app/data/models/pump_log_model.dart';
 import 'package:kelola_tani/app/data/models/sensor_log_model.dart';
 import 'package:kelola_tani/app/services/firestore_service.dart';
 import 'package:kelola_tani/app/services/snackbar_service.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeviceDetailController extends GetxController {
   final FirestoreService _firestore = FirestoreService();
 
   String deviceId = Get.arguments?['deviceId'] ?? 'KTANI-A1B2C3D4E5F6';
+  final RxString lastRecommendation = ''.obs;
 
   // final String uid = '02QnFCV4Woh7VAqar9oMY0us4W03';
   final String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -51,7 +55,14 @@ class DeviceDetailController extends GetxController {
 
     _statusTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (device.value != null) {
+        // TAMBAHKAN DEBUG PRINT INI
+        print(">>> [DEBUG] LastSeen dari DB: ${device.value!.lastSeen}");
+        print(">>> [DEBUG] Waktu sekarang: ${DateTime.now()}");
+
         isDeviceOnline.value = device.value!.isOnline;
+        print(">>> [DEBUG] Status Online: ${isDeviceOnline.value}");
+      } else {
+        print(">>> [DEBUG] Device model masih NULL!");
       }
     });
 
@@ -69,6 +80,41 @@ class DeviceDetailController extends GetxController {
 
     _fetchChartLogs();
     _fetchTableLogs();
+
+    loadLastRecommendation();
+  }
+
+  Future<void> loadLastRecommendation() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString('last_predict_$deviceId');
+    if (raw != null) {
+      final data = jsonDecode(raw);
+      lastRecommendation.value = data['recommendation'] ?? '';
+    }
+  }
+
+  Future<void> exportCsv(DateTime start, DateTime end) async {
+    try {
+      final logs = await FirestoreService.to.fetchSensorLogsByRange(
+        uid, // ganti sesuai sumber uid di controller-mu
+        deviceId, // ganti sesuai sumber deviceId di controller-mu
+        start,
+        end,
+      );
+
+      if (logs.isEmpty) {
+        SnackbarService.info(
+          'Tidak ada data',
+          'Tidak ada data sensor untuk rentang tanggal ini.',
+        );
+        return;
+      }
+
+      final csv = CsvExporter.buildCsv(logs);
+      await CsvExporter.shareCsv(csv, deviceId);
+    } catch (e) {
+      SnackbarService.error('Error', 'Gagal mengekspor data CSV: $e');
+    }
   }
 
   Future<void> sendPumpCommand(String action) async {
@@ -259,19 +305,8 @@ class DeviceDetailController extends GetxController {
       }
     });
 
-    _firestore.streamDevices(uid).listen((devices) {
-      final currentDevice = devices.firstWhereOrNull(
-        (d) => d.deviceId == deviceId,
-      );
-      if (currentDevice != null) {
-        device.value = currentDevice;
-      }
-    });
-
     config.bindStream(_firestore.streamConfig(uid, deviceId));
-
     command.bindStream(_firestore.streamPumpCommand(uid, deviceId));
-
     latestSensor.bindStream(_firestore.streamLatestSensorLog(uid, deviceId));
   }
 

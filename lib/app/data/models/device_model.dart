@@ -18,8 +18,11 @@ class DeviceModel {
   bool get isOnline {
     if (lastSeen == null) return false;
 
-    final threshold = Duration(minutes: 2);
-    final difference = DateTime.now().difference(lastSeen!);
+    final now = DateTime.now().toUtc();
+    final lastSeenUtc = lastSeen!.toUtc();
+
+    final threshold = Duration(minutes: 10);
+    final difference = now.difference(lastSeenUtc);
 
     return difference < threshold;
   }
